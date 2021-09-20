@@ -2,7 +2,7 @@ import { createRouter, createWebHashHistory, RouteParams } from 'vue-router'
 
 import Home from './pages/Home.vue'
 
-export type AppRouteNames = 'home'
+export type AppRouteNames = 'home' | 'tag'
 
 export const router = createRouter({
   history: createWebHashHistory(),
