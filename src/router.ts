@@ -2,14 +2,19 @@ import { createRouter, createWebHashHistory, RouteParams } from 'vue-router'
 
 import Home from './pages/Home.vue'
 
-export type AppRouteNames = 'home' | 'tag'
+export type AppRouteNames = 'global-feed' | 'tag'
 
 export const router = createRouter({
   history: createWebHashHistory(),
   routes: [
     {
-      name: 'home',
+      name: 'global-feed',
       path: '/',
+      component: Home,
+    },
+    {
+      name: 'tag',
+      path: '/tag/:tag',
       component: Home,
     },
   ],
