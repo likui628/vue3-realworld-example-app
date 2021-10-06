@@ -1,24 +1,18 @@
 <template>
   <nav class="navbar navbar-light">
     <div class="container">
-      <a class="navbar-brand" href="index.html">conduit</a>
+      <app-link class="navbar-brand" name="global-feed"> conduit </app-link>
       <ul class="nav navbar-nav pull-xs-right">
-        <li class="nav-item">
+        <li class="nav-item" v-for="link in navLinks" :key="link.name">
           <!-- Add "active" class when you're on that page" -->
-          <a class="nav-link active" href="">Home</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="">
-            <i class="ion-compose"></i>&nbsp;New Post
-          </a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="">
-            <i class="ion-gear-a"></i>&nbsp;Settings
-          </a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="">Sign up</a>
+          <app-link
+            class="nav-link"
+            active-class="active"
+            :name="link.name"
+            :params="link.params"
+          >
+            <i v-if="link.icon" :class="link.icon" /> {{ link.title }}
+          </app-link>
         </li>
       </ul>
     </div>
@@ -26,8 +20,47 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue'
+import { defineComponent, ref } from 'vue'
+import AppLink from './AppLink.vue'
+import { AppRouteNames } from '../router'
+import { RouteParams } from 'vue-router'
+
+interface NavLink {
+  name: AppRouteNames
+  params?: Partial<RouteParams>
+  title: string
+  icon?: string
+  display: 'all' | 'anonym' | 'authorized'
+}
+
 export default defineComponent({
   name: 'AppNavigation',
+  components: { AppLink },
+  setup() {
+    const navLinks = ref<NavLink[]>([
+      {
+        name: 'global-feed',
+        title: 'Home',
+        display: 'all',
+      },
+      {
+        name: 'login',
+        title: 'Sign in',
+        display: 'all',
+      },
+      {
+        name: 'register',
+        title: 'Sign up',
+        display: 'all',
+      },
+      {
+        name: 'settings',
+        title: 'Settings',
+        display: 'authorized',
+        icon: 'ion-gear-a',
+      },
+    ])
+    return { navLinks }
+  },
 })
 </script>

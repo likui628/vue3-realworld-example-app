@@ -16,7 +16,10 @@ export default defineComponent({
   },
   props: {
     name: { type: String as PropType<AppRouteNames>, required: true },
-    params: { type: Object as PropType<RouteParams>, default: () => ({}) },
+    params: {
+      type: Object as PropType<Partial<RouteParams>>,
+      default: () => ({}),
+    },
   },
   setup(props, { attrs }) {
     return {

@@ -2,7 +2,12 @@ import { createRouter, createWebHashHistory, RouteParams } from 'vue-router'
 
 import Home from './pages/Home.vue'
 
-export type AppRouteNames = 'global-feed' | 'tag'
+export type AppRouteNames =
+  | 'global-feed'
+  | 'login'
+  | 'tag'
+  | 'register'
+  | 'settings'
 
 export const router = createRouter({
   history: createWebHashHistory(),
@@ -16,6 +21,21 @@ export const router = createRouter({
       name: 'tag',
       path: '/tag/:tag',
       component: Home,
+    },
+    {
+      name: 'login',
+      path: '/login',
+      component: () => import('./pages/Login.vue'),
+    },
+    {
+      name: 'register',
+      path: '/register',
+      component: () => import('./pages/Register.vue'),
+    },
+    {
+      name: 'settings',
+      path: '/settings',
+      component: () => import('./pages/Settings.vue'),
     },
   ],
 })
