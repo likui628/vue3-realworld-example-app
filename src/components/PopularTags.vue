@@ -11,6 +11,7 @@
     >
       {{ tag }}
     </app-link>
+    <text v-if="tags.length === 0">No tags are here... yet.</text>
   </div>
 </template>
 
