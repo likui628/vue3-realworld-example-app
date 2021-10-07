@@ -1,4 +1,4 @@
-import params2query from './params_to_query'
+import params2query from './params-to-query'
 
 describe('# params2query', () => {
   it('should return query string given an object', () => {

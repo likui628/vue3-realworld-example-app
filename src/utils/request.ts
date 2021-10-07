@@ -1,5 +1,10 @@
-import params2query from './params_to_query'
-import { NetworkError } from '../types/errors'
+import params2query from './params-to-query'
+import HttpStatusCodes from './http-status-code'
+import {
+  AuthorizationError,
+  NetworkError,
+  ValidationError,
+} from '../types/errors'
 
 export interface FetchRequestOptions {
   prefix: string
@@ -19,7 +24,16 @@ export default class FetchRequest {
     if (response.ok) {
       return response.json()
     }
-    throw new NetworkError(response)
+
+    switch (response.status) {
+      case HttpStatusCodes.UNAUTHORIZED:
+        throw new AuthorizationError(response)
+      case HttpStatusCodes.FORBIDDEN: //FORBIDDEN
+      case HttpStatusCodes.UNPROCESSABLE_ENTITY:
+        throw new ValidationError(response)
+      default:
+        throw new NetworkError(response)
+    }
   }
 
   private readonly generateFinalUrl = (

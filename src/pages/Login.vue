@@ -27,7 +27,10 @@
                 placeholder="Password"
               />
             </fieldset>
-            <button class="btn btn-lg btn-primary pull-xs-right">
+            <button
+              class="btn btn-lg btn-primary pull-xs-right"
+              @click="submit"
+            >
               Sign in
             </button>
           </form>
@@ -38,9 +41,25 @@
 </template>
 <script lang="ts">
 import { defineComponent } from 'vue'
+import { postLogin } from '../services/auth/postLogin'
 
 export default defineComponent({
   name: 'Login',
-  setup() {},
+  setup() {
+    let form = {
+      email: 'xxxx@xx.com',
+      password: 'xxx',
+    }
+    const submit = function () {
+      postLogin(form)
+        .then((user) => {
+          console.log(user)
+        })
+        .catch((errors) => {
+          console.log(errors)
+        })
+    }
+    return { submit }
+  },
 })
 </script>
