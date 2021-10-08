@@ -6,7 +6,9 @@ export interface PostLoginForm {
   password: string
 }
 
-export async function postLogin(form: PostLoginForm): Promise<any> {
+export type PostLoginErrors = Partial<Record<keyof PostLoginForm, string[]>>
+
+export async function postLogin(form: PostLoginForm): Promise<User | void> {
   return request
     .post<UserResponse>('/users/login', { user: form })
     .then((res) => res.user)
