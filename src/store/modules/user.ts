@@ -1,12 +1,28 @@
-const state = () => ({
-  user: [],
+import { request } from '../../services'
+
+interface UserState {
+  user: User | null
+}
+
+const state = (): UserState => ({
+  user: null,
 })
 
 const getters = {}
 
 const actions = {}
 
-const mutations = {}
+const mutations = {
+  updateUser(state: UserState, user: User) {
+    if (user === undefined || user === null) {
+      state.user = null
+      request.deleteAuthorizationHeader()
+    } else {
+      state.user = user
+      request.setAuthorizationHeader(user.token)
+    }
+  },
+}
 
 export default {
   state,

@@ -92,4 +92,12 @@ export default class FetchRequest {
       this.handleResponse<T>(r)
     )
   }
+
+  setAuthorizationHeader(token: string) {
+    this.options.headers.authorization = `Token ${token}`
+  }
+
+  deleteAuthorizationHeader() {
+    delete this.options?.headers?.authorization
+  }
 }

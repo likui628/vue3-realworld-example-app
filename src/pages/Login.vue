@@ -55,6 +55,7 @@ import {
 } from '../services/auth/postLogin'
 import { routerPush } from '../router'
 import AppLink from '../components/AppLink.vue'
+import { useStore } from 'vuex'
 
 export default defineComponent({
   name: 'Login',
@@ -73,9 +74,12 @@ export default defineComponent({
 
     const login = function () {
       loadding.value = true
+
       postLogin(form)
         .then((user) => {
-          //todo set Authorization
+          const store = useStore()
+          store.commit('updateUser', user)
+
           routerPush('global-feed')
         })
         .catch((err) => {
