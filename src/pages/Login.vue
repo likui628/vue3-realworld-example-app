@@ -72,12 +72,14 @@ export default defineComponent({
 
     const errors = ref<PostLoginErrors>({})
 
+    const store = useStore()
+
     const login = function () {
       loadding.value = true
+      errors.value = {}
 
       postLogin(form)
         .then((user) => {
-          const store = useStore()
           store.commit('updateUser', user)
 
           routerPush('global-feed')
