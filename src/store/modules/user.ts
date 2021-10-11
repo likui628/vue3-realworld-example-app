@@ -8,7 +8,9 @@ const state = (): UserState => ({
   user: null,
 })
 
-const getters = {}
+const getters = {
+  user: (state: UserState) => state.user,
+}
 
 const actions = {}
 

@@ -8,6 +8,8 @@ export type AppRouteNames =
   | 'tag'
   | 'register'
   | 'settings'
+  | 'profile'
+  | 'editor'
 
 export const router = createRouter({
   history: createWebHashHistory(),
@@ -36,6 +38,16 @@ export const router = createRouter({
       name: 'settings',
       path: '/settings',
       component: () => import('./pages/Settings.vue'),
+    },
+    {
+      name: 'profile',
+      path: '/settings',
+      component: Home,
+    },
+    {
+      name: 'editor',
+      path: '/settings',
+      component: Home,
     },
   ],
 })

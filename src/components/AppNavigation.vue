@@ -20,38 +20,46 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref } from 'vue'
+import { defineComponent, ref, computed } from 'vue'
 import AppLink from './AppLink.vue'
 import { AppRouteNames } from '../router'
 import { RouteParams } from 'vue-router'
+import { useStore } from 'vuex'
 
 interface NavLink {
   name: AppRouteNames
   params?: Partial<RouteParams>
   title: string
   icon?: string
-  display: 'all' | 'anonym' | 'authorized'
+  display: 'all' | 'guest' | 'authorized'
 }
 
 export default defineComponent({
   name: 'AppNavigation',
   components: { AppLink },
   setup() {
-    const navLinks = ref<NavLink[]>([
+    const store = useStore()
+    const username = computed(() => store.getters.user?.username)
+    const allLinks = ref<NavLink[]>([
       {
         name: 'global-feed',
         title: 'Home',
         display: 'all',
       },
       {
+        name: 'editor',
+        title: 'New Article',
+        display: 'authorized',
+      },
+      {
         name: 'login',
         title: 'Sign in',
-        display: 'all',
+        display: 'guest',
       },
       {
         name: 'register',
         title: 'Sign up',
-        display: 'all',
+        display: 'guest',
       },
       {
         name: 'settings',
@@ -59,7 +67,21 @@ export default defineComponent({
         display: 'authorized',
         icon: 'ion-gear-a',
       },
+      {
+        name: 'profile',
+        params: { username: username.value },
+        title: username.value || '',
+        display: 'authorized',
+      },
     ])
+
+    const navLinks = computed(() =>
+      allLinks.value.filter(
+        (link) =>
+          link.display === 'all' ||
+          link.display === (username.value ? 'authorized' : 'guest')
+      )
+    )
     return { navLinks }
   },
 })
