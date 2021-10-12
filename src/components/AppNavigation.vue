@@ -24,7 +24,7 @@ import { defineComponent, ref, computed } from 'vue'
 import AppLink from './AppLink.vue'
 import { AppRouteNames } from '../router'
 import { RouteParams } from 'vue-router'
-import { useStore } from 'vuex'
+import { useStore } from '../store'
 
 interface NavLink {
   name: AppRouteNames

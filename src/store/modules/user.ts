@@ -1,8 +1,6 @@
 import { request } from '../../services'
 
-interface UserState {
-  user: User | null
-}
+import { UserState } from '..'
 
 const state = (): UserState => ({
   user: null,

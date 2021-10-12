@@ -55,7 +55,7 @@ import {
 } from '../services/auth/postLogin'
 import { routerPush } from '../router'
 import AppLink from '../components/AppLink.vue'
-import { useStore } from 'vuex'
+import { useStore } from '../store'
 
 export default defineComponent({
   name: 'Login',

@@ -64,7 +64,7 @@ import {
   PostRegisterErrors,
   PostRegisterForm,
 } from '../services/auth/postRegister'
-import { useStore } from 'vuex'
+import { useStore } from '../store'
 import { routerPush } from '../router'
 
 export default defineComponent({
