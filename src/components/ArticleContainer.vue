@@ -1,7 +1,11 @@
 <template>
   <ArticleNavigation />
-  <ArticlePreview />
-  <ArticlePagination />
+  <ArticlePreview :article="article" v-for="article in articles" />
+  <ArticlePagination
+    :page="page"
+    :count="articlesCount"
+    @page-change="changePage"
+  />
 </template>
 
 <script lang="ts">
@@ -16,9 +20,10 @@ export default defineComponent({
   name: 'ArticleContainer',
   components: { ArticleNavigation, ArticlePreview, ArticlePagination },
   async setup() {
-    const { page, changePage, fetchArticles, articles } = useArticles()
-
-    return { articles }
+    const { page, articlesCount, changePage, fetchArticles, articles } =
+      useArticles()
+    await fetchArticles()
+    return { page, articles, articlesCount, changePage }
   },
 })
 </script>

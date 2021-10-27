@@ -8,14 +8,27 @@ export function useArticles() {
   }
 
   const articles = ref<Article[]>([])
+  const articlesCount = ref(0)
+
   async function fetchArticles(): Promise<void> {
-    articles.value = await getArticles(page.value)
+    let responsePromise: null | Promise<ArticlesResponse> = null
+
+    responsePromise = getArticles(page.value)
+
+    if (responsePromise !== null) {
+      const response = await responsePromise
+      articles.value = response.articles
+      articlesCount.value = response.articlesCount
+    }
   }
+
+  watch(page, fetchArticles)
 
   return {
     page,
     changePage,
     fetchArticles,
     articles,
+    articlesCount,
   }
 }
