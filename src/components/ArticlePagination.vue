@@ -10,8 +10,9 @@
         class="page-link"
         href="javascript:"
         @click="onPageChange(pageNumber)"
-        >{{ pageNumber }}</a
       >
+        {{ pageNumber }}
+      </a>
     </li>
   </ul>
 </template>
