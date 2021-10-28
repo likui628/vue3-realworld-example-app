@@ -4,6 +4,7 @@ import Home from './pages/Home.vue'
 
 export type AppRouteNames =
   | 'global-feed'
+  | 'feed'
   | 'login'
   | 'tag'
   | 'register'
@@ -16,6 +17,11 @@ export const router = createRouter({
   routes: [
     {
       name: 'global-feed',
+      path: '/',
+      component: Home,
+    },
+    {
+      name: 'feed',
       path: '/',
       component: Home,
     },
