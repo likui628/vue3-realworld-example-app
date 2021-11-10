@@ -1,4 +1,5 @@
 import { ref, watch } from 'vue'
+import { useRoute } from 'vue-router'
 import { getArticles } from '../services/article/getArticles'
 
 export function useArticles() {
@@ -21,11 +22,23 @@ export function useArticles() {
       articlesCount.value = response.articlesCount
     }
   }
+  const route = useRoute()
+  const tag = ref('')
+  watch(
+    () => route.params.tag,
+    (tagParam) => {
+      if (tagParam !== tag.value) {
+        tag.value = typeof tagParam === 'string' ? tagParam : ''
+      }
+    },
+    { immediate: true }
+  )
 
   watch(page, fetchArticles)
 
   return {
     page,
+    tag,
     changePage,
     fetchArticles,
     articles,
