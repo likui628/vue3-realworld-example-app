@@ -1,7 +1,7 @@
 import { defineStore } from 'pinia'
 import { request } from '../services'
 
-export const UserStore = defineStore('user', {
+export const userStore = defineStore('user', {
   state: () => ({
     user: null as User | null,
   }),

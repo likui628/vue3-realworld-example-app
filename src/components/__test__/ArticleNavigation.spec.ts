@@ -1,10 +1,19 @@
-import { store, key } from '../../store'
+import { userStore } from './../../store/user'
+import { createTestingPinia } from '@pinia/testing'
 import { router } from '../../router'
-import { mount } from '@vue/test-utils'
+import { flushPromises, mount } from '@vue/test-utils'
 import ArticleNavigation from '../ArticleNavigation.vue'
 
+const mockUser = {
+  id: 1,
+  username: 'foo',
+  email: 'a@b.c',
+  token: 'token',
+  bio: undefined,
+  image: undefined,
+}
+
 beforeEach(async () => {
-  store.commit('updateUser', null)
   await router.push('/')
 })
 
@@ -12,7 +21,7 @@ describe('ArticleNavigation.vue', () => {
   test('when user not logged', () => {
     const wrapper = mount(ArticleNavigation, {
       global: {
-        plugins: [router, [store, key]],
+        plugins: [router, createTestingPinia()],
       },
     })
     expect(wrapper.findAll('.nav-item')).toHaveLength(1)
@@ -20,21 +29,17 @@ describe('ArticleNavigation.vue', () => {
   })
 
   test('when user logged', async () => {
-    store.commit('updateUser', {
-      id: 1,
-      username: 'foo',
-      email: 'a@b.c',
-      token: 'token',
-      bio: undefined,
-      image: undefined,
-    })
     const wrapper = mount(ArticleNavigation, {
       props: { tag: 'this is a tag' },
       global: {
-        plugins: [router, [store, key]],
+        plugins: [router, createTestingPinia()],
       },
     })
-  
+    const store = userStore()
+    store.user = mockUser
+
+    await flushPromises()
+
     expect(wrapper.findAll('.nav-item')).toHaveLength(3)
     expect(wrapper.html()).toContain('Your Feed')
     expect(wrapper.html()).toContain('Global Feed')

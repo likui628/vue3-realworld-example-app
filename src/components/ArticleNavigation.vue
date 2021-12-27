@@ -16,7 +16,7 @@
 </template>
 <script lang="ts">
 import { defineComponent, computed } from 'vue'
-import { useStore } from '../store'
+import { userStore } from '../store/user'
 import AppLink from './AppLink.vue'
 
 export default defineComponent({
@@ -27,8 +27,8 @@ export default defineComponent({
     username: { type: String, required: false },
   },
   setup(props) {
-    const store = useStore()
-    const username = computed(() => store.getters.user?.username)
+    const store = userStore()
+    const username = computed(() => store.user?.username)
     const allLinks = computed<any[]>(() => [
       {
         name: 'feed',

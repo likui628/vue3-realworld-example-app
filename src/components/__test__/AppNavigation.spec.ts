@@ -1,10 +1,19 @@
-import { store, key } from '../../store'
+import { userStore } from './../../store/user'
+import { createTestingPinia } from '@pinia/testing'
 import { router } from '../../router'
-import { mount } from '@vue/test-utils'
+import { flushPromises, mount } from '@vue/test-utils'
 import AppNavigation from '../AppNavigation.vue'
 
+const mockUser = {
+  id: 1,
+  username: 'foo',
+  email: 'a@b.c',
+  token: 'token',
+  bio: undefined,
+  image: undefined,
+}
+
 beforeEach(async () => {
-  store.commit('updateUser', null)
   await router.push('/')
 })
 
@@ -12,7 +21,7 @@ describe('AppNavigation.vue', () => {
   test('when user not logged', () => {
     const wrapper = mount(AppNavigation, {
       global: {
-        plugins: [router, [store, key]],
+        plugins: [router, createTestingPinia()],
       },
     })
     expect(wrapper.findAll('.nav-item')).toHaveLength(3)
@@ -22,20 +31,16 @@ describe('AppNavigation.vue', () => {
   })
 
   test('when user logged', async () => {
-    store.commit('updateUser', {
-      id: 1,
-      username: 'foo',
-      email: 'a@b.c',
-      token: 'token',
-      bio: undefined,
-      image: undefined,
-    })
     const wrapper = mount(AppNavigation, {
       global: {
-        plugins: [router, [store, key]],
+        plugins: [router, createTestingPinia()],
       },
     })
 
+    const store = userStore()
+    store.user = mockUser
+
+    await flushPromises()
     expect(wrapper.findAll('.nav-item')).toHaveLength(4)
     expect(wrapper.html()).toContain('Home')
     expect(wrapper.html()).toContain('New Article')

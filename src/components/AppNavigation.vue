@@ -20,11 +20,11 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref, computed } from 'vue'
+import { defineComponent, ref, computed, watchEffect } from 'vue'
 import AppLink from './AppLink.vue'
 import { AppRouteNames } from '../router'
 import { RouteParams } from 'vue-router'
-import { useStore } from '../store'
+import { userStore } from '../store/user'
 
 interface NavLink {
   name: AppRouteNames
@@ -38,9 +38,14 @@ export default defineComponent({
   name: 'AppNavigation',
   components: { AppLink },
   setup() {
-    const store = useStore()
-    const username = computed(() => store.getters.user?.username)
-    const allLinks = ref<NavLink[]>([
+    const store = userStore()
+
+    const username = computed(() => store.user?.username)
+    const displayStatus = computed(() =>
+      username.value ? 'authorized' : 'guest'
+    )
+
+    const allLinks = computed<NavLink[]>(() => [
       {
         name: 'global-feed',
         title: 'Home',
@@ -77,9 +82,7 @@ export default defineComponent({
 
     const navLinks = computed(() =>
       allLinks.value.filter(
-        (link) =>
-          link.display === 'all' ||
-          link.display === (username.value ? 'authorized' : 'guest')
+        (l) => l.display === 'all' || l.display === displayStatus.value
       )
     )
     return { navLinks }
