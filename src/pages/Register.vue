@@ -57,15 +57,12 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref, reactive } from 'vue'
+import { defineComponent, reactive } from 'vue'
 import AppLink from '../components/AppLink.vue'
-import {
-  postRegister,
-  PostRegisterErrors,
-  PostRegisterForm,
-} from '../services/auth/postRegister'
-import { useStore } from '../store'
+import { PostRegisterForm } from '../services/auth/postRegister'
+import { userStore } from '../store/user'
 import { routerPush } from '../router'
+import { useAuth } from '../composable/useAuth'
 
 export default defineComponent({
   name: 'register',
@@ -73,35 +70,24 @@ export default defineComponent({
     AppLink,
   },
   setup() {
-    const loadding = ref(false)
-
     const form = reactive<PostRegisterForm>({
       username: '',
       email: '',
       password: '',
     })
 
-    const errors = ref<PostRegisterErrors>({})
+    const { user, register: postRegister, errors, loadding } = useAuth()
 
-    const store = useStore()
+    const store = userStore()
 
-    const register = function () {
-      loadding.value = true
-      errors.value = {}
-      
-      postRegister(form)
-        .then((user) => {
-          store.commit('updateUser', user)
-
-          routerPush('global-feed')
-        })
-        .catch((err) => {
-          errors.value = err
-        })
-        .finally(() => {
-          loadding.value = false
-        })
+    const register = async () => {
+      await postRegister(form)
+      if (user.value) {
+        store.updateUser(user.value)
+        routerPush('global-feed')
+      }
     }
+
     return { loadding, errors, form, register }
   },
 })
