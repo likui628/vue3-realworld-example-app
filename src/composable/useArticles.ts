@@ -1,12 +1,9 @@
-import { ref, watch } from 'vue'
+import { ref, watch, computed } from 'vue'
 import { useRoute } from 'vue-router'
-import { getArticles } from '../services/article/getArticles'
+import { getArticles, getArticlesByTag } from '../services/article/getArticles'
 
 export function useArticles() {
-  const page = ref(1)
-  async function changePage(value: number) {
-    page.value = value
-  }
+  const route = useRoute()
 
   const articles = ref<Article[]>([])
   const articlesCount = ref(0)
@@ -14,7 +11,13 @@ export function useArticles() {
   async function fetchArticles(): Promise<void> {
     let responsePromise: null | Promise<ArticlesResponse> = null
 
-    responsePromise = getArticles(page.value)
+    if (route.name === 'tag' && tag.value !== undefined) {
+      responsePromise = getArticlesByTag(tag.value, page.value)
+    }
+
+    if (route.name === 'global-feed') {
+      responsePromise = getArticles(page.value)
+    }
 
     if (responsePromise !== null) {
       const response = await responsePromise
@@ -22,18 +25,16 @@ export function useArticles() {
       articlesCount.value = response.articlesCount
     }
   }
-  const route = useRoute()
-  const tag = ref('')
-  watch(
-    () => route.params.tag,
-    (tagParam) => {
-      if (tagParam !== tag.value) {
-        tag.value = typeof tagParam === 'string' ? tagParam : ''
-      }
-    },
-    { immediate: true }
-  )
 
+  const tag = computed(() =>
+    typeof route.params.tag === 'string' ? route.params.tag : ''
+  )
+  watch(tag, fetchArticles)
+
+  const page = ref(1)
+  async function changePage(value: number) {
+    page.value = value
+  }
   watch(page, fetchArticles)
 
   return {
