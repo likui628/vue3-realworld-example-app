@@ -56,39 +56,29 @@
   </div>
 </template>
 
-<script lang="ts">
-import { defineComponent, reactive } from 'vue'
+<script lang="ts" setup>
+import { reactive } from 'vue'
 import AppLink from '../components/AppLink.vue'
 import { PostRegisterForm } from '../services/auth/postRegister'
 import { userStore } from '../store/user'
 import { routerPush } from '../router'
 import { useAuth } from '../composable/useAuth'
 
-export default defineComponent({
-  name: 'register',
-  components: {
-    AppLink,
-  },
-  setup() {
-    const form = reactive<PostRegisterForm>({
-      username: '',
-      email: '',
-      password: '',
-    })
-
-    const { user, register: postRegister, errors, loadding } = useAuth()
-
-    const store = userStore()
-
-    const register = async () => {
-      await postRegister(form)
-      if (user.value) {
-        store.updateUser(user.value)
-        routerPush('global-feed')
-      }
-    }
-
-    return { loadding, errors, form, register }
-  },
+const form = reactive<PostRegisterForm>({
+  username: '',
+  email: '',
+  password: '',
 })
+
+const { user, register: postRegister, errors, loadding } = useAuth()
+
+const store = userStore()
+
+const register = async () => {
+  await postRegister(form)
+  if (user.value) {
+    store.updateUser(user.value)
+    routerPush('global-feed')
+  }
+}
 </script>

@@ -16,29 +16,24 @@
     </li>
   </ul>
 </template>
-<script lang="ts">
+<script lang="ts" setup>
 import { limit } from '../services'
-import { computed, defineComponent, toRefs } from 'vue'
+import { computed } from 'vue'
 
-export default defineComponent({
-  name: 'ArticlePagination',
-  props: {
-    page: { type: Number, required: true },
-    count: { type: Number, required: true },
-  },
-  emits: {
-    'page-change': (index: number) => typeof index === 'number',
-  },
-  setup(props, { emit }) {
-    const { count, page } = toRefs(props)
-    const pagesCount = computed(() => Math.ceil(count.value / limit))
-    const isActive = (index: number) => page.value === index
-    const onPageChange = (index: number) => emit('page-change', index)
-    return {
-      pagesCount,
-      isActive,
-      onPageChange,
-    }
-  },
-})
+interface Props {
+  page: number
+  count: number
+}
+
+const props = defineProps<Props>()
+
+const emit = defineEmits<{
+  (e: 'page-change', index: number): void
+}>()
+
+const pagesCount = computed(() => Math.ceil(props.count / limit))
+
+const isActive = (index: number) => props.page === index
+
+const onPageChange = (index: number) => emit('page-change', index)
 </script>

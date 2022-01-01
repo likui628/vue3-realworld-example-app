@@ -30,16 +30,10 @@
     </a>
   </div>
 </template>
-<script lang="ts">
-import { defineComponent, PropType } from 'vue'
+<script lang="ts" setup>
+interface Props {
+  article: Article
+}
 
-export default defineComponent({
-  props: {
-    article: {
-      type: Object as PropType<Article>,
-      required: true,
-    },
-  },
-  setup() {},
-})
+const props = defineProps<Props>()
 </script>

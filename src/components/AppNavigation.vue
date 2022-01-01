@@ -19,8 +19,8 @@
   </nav>
 </template>
 
-<script lang="ts">
-import { defineComponent, ref, computed, watchEffect } from 'vue'
+<script lang="ts" setup>
+import { computed } from 'vue'
 import AppLink from './AppLink.vue'
 import { AppRouteNames } from '../router'
 import { RouteParams } from 'vue-router'
@@ -34,58 +34,49 @@ interface NavLink {
   display: 'all' | 'guest' | 'authorized'
 }
 
-export default defineComponent({
-  name: 'AppNavigation',
-  components: { AppLink },
-  setup() {
-    const store = userStore()
+const store = userStore()
 
-    const username = computed(() => store.user?.username)
-    const displayStatus = computed(() =>
-      username.value ? 'authorized' : 'guest'
-    )
+const username = computed(() => store.user?.username)
+const displayStatus = computed(() => (username.value ? 'authorized' : 'guest'))
 
-    const allLinks = computed<NavLink[]>(() => [
-      {
-        name: 'global-feed',
-        title: 'Home',
-        display: 'all',
-      },
-      {
-        name: 'editor',
-        title: 'New Article',
-        display: 'authorized',
-      },
-      {
-        name: 'login',
-        title: 'Sign in',
-        display: 'guest',
-      },
-      {
-        name: 'register',
-        title: 'Sign up',
-        display: 'guest',
-      },
-      {
-        name: 'settings',
-        title: 'Settings',
-        display: 'authorized',
-        icon: 'ion-gear-a',
-      },
-      {
-        name: 'profile',
-        params: { username: username.value },
-        title: username.value || '',
-        display: 'authorized',
-      },
-    ])
-
-    const navLinks = computed(() =>
-      allLinks.value.filter(
-        (l) => l.display === 'all' || l.display === displayStatus.value
-      )
-    )
-    return { navLinks }
+const allLinks = computed<NavLink[]>(() => [
+  {
+    name: 'global-feed',
+    title: 'Home',
+    display: 'all',
   },
-})
+  {
+    name: 'editor',
+    title: 'New Article',
+    display: 'authorized',
+  },
+  {
+    name: 'login',
+    title: 'Sign in',
+    display: 'guest',
+  },
+  {
+    name: 'register',
+    title: 'Sign up',
+    display: 'guest',
+  },
+  {
+    name: 'settings',
+    title: 'Settings',
+    display: 'authorized',
+    icon: 'ion-gear-a',
+  },
+  {
+    name: 'profile',
+    params: { username: username.value },
+    title: username.value || '',
+    display: 'authorized',
+  },
+])
+
+const navLinks = computed(() =>
+  allLinks.value.filter(
+    (l) => l.display === 'all' || l.display === displayStatus.value
+  )
+)
 </script>

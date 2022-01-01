@@ -14,45 +14,39 @@
     </ul>
   </div>
 </template>
-<script lang="ts">
-import { defineComponent, computed } from 'vue'
+<script lang="ts" setup>
+import { computed } from 'vue'
 import { userStore } from '../store/user'
 import AppLink from './AppLink.vue'
 
-export default defineComponent({
-  name: 'ArticleNavigation',
-  components: { AppLink },
-  props: {
-    tag: { type: String, required: false },
-    username: { type: String, required: false },
-  },
-  setup(props) {
-    const store = userStore()
-    const username = computed(() => store.user?.username)
-    const allLinks = computed<any[]>(() => [
-      {
-        name: 'feed',
-        routeName: 'feed',
-        title: 'Your Feed',
-        show: username.value ? true : false,
-      },
-      {
-        name: 'global-feed',
-        routeName: 'global-feed',
-        title: 'Global Feed',
-        show: true,
-      },
-      {
-        name: 'tag-feed',
-        routeName: 'tag',
-        routeParams: { tag: props.tag },
-        title: props.tag,
-        icon: 'ion-pound',
-        show: props.tag ? true : false,
-      },
-    ])
-    const links = computed(() => allLinks.value.filter((link) => link.show))
-    return { links }
-  },
+const props = defineProps({
+  tag: String,
+  username: String,
 })
+
+const store = userStore()
+const username = computed(() => store.user?.username)
+const allLinks = computed<any[]>(() => [
+  {
+    name: 'feed',
+    routeName: 'feed',
+    title: 'Your Feed',
+    show: username.value ? true : false,
+  },
+  {
+    name: 'global-feed',
+    routeName: 'global-feed',
+    title: 'Global Feed',
+    show: true,
+  },
+  {
+    name: 'tag-feed',
+    routeName: 'tag',
+    routeParams: { tag: props.tag },
+    title: props.tag,
+    icon: 'ion-pound',
+    show: props.tag ? true : false,
+  },
+])
+const links = computed(() => allLinks.value.filter((link) => link.show))
 </script>

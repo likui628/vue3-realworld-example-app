@@ -16,20 +16,19 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from '@vue/runtime-core'
+export default {
+  name: 'PopularTags',
+}
+</script>
+
+<script lang="ts" setup>
+import { onMounted } from 'vue'
 import { useTags } from '../composable/useTags'
 import AppLink from '../components/AppLink.vue'
-export default defineComponent({
-  name: 'PopularTags',
-  components: {
-    AppLink,
-  },
-  async setup() {
-    const { tags, fetchTags } = useTags()
-    await fetchTags()
-    return {
-      tags,
-    }
-  },
+const { tags, fetchTags } = useTags()
+await fetchTags()
+
+onMounted(async () => {
+  await fetchTags()
 })
 </script>

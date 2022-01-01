@@ -4,28 +4,19 @@
   </router-link>
 </template>
 
-<script lang="ts">
-import { defineComponent, PropType } from 'vue'
+<script lang="ts" setup>
+import { useAttrs } from 'vue'
 import type { AppRouteNames } from '../router'
 import type { RouteParams } from 'vue-router'
 import { RouterLink } from 'vue-router'
-export default defineComponent({
-  name: 'AppLink',
-  components: {
-    RouterLink,
-  },
-  props: {
-    name: { type: String as PropType<AppRouteNames>, required: true },
-    params: {
-      type: Object as PropType<Partial<RouteParams>>,
-      default: () => ({}),
-    },
-  },
-  setup(props, { attrs }) {
-    return {
-      props,
-      attrs,
-    }
-  },
+
+interface Props {
+  name: AppRouteNames
+  params?: RouteParams
+}
+const props = withDefaults(defineProps<Props>(), {
+  params: () => ({}),
 })
+
+const attrs = useAttrs()
 </script>
