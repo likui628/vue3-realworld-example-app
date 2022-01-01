@@ -1,9 +1,15 @@
 import { ref, watch, computed } from 'vue'
 import { useRoute } from 'vue-router'
-import { getArticles, getArticlesByTag } from '../services/article/getArticles'
+import {
+  getArticles,
+  getArticlesByTag,
+  getArticlesByFeed,
+} from '../services/article/getArticles'
+import { userStore } from '../store/user'
 
 export function useArticles() {
   const route = useRoute()
+  const store = userStore()
 
   const articles = ref<Article[]>([])
   const articlesCount = ref(0)
@@ -11,12 +17,16 @@ export function useArticles() {
   async function fetchArticles(): Promise<void> {
     let responsePromise: null | Promise<ArticlesResponse> = null
 
-    if (route.name === 'tag' && tag.value !== undefined) {
+    if (routeName.value === 'tag' && tag.value !== undefined) {
       responsePromise = getArticlesByTag(tag.value, page.value)
     }
 
-    if (route.name === 'global-feed') {
+    if (routeName.value === 'global-feed') {
       responsePromise = getArticles(page.value)
+    }
+
+    if (routeName.value === 'feed' && store.user) {
+      responsePromise = getArticlesByFeed(page.value)
     }
 
     if (responsePromise !== null) {
@@ -25,6 +35,9 @@ export function useArticles() {
       articlesCount.value = response.articlesCount
     }
   }
+
+  const routeName = computed(() => route.name)
+  watch(routeName, fetchArticles)
 
   const tag = computed(() =>
     typeof route.params.tag === 'string' ? route.params.tag : ''

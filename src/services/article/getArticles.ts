@@ -12,3 +12,8 @@ export function getArticlesByTag(
   const params = { tag: tagName, limit, offset: (page - 1) * limit }
   return request.get<ArticlesResponse>('/articles', { params })
 }
+
+export function getArticlesByFeed(page = 1): Promise<ArticlesResponse> {
+  const params = { limit, offset: (page - 1) * limit }
+  return request.get<ArticlesResponse>('/articles/feed', { params })
+}
