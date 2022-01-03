@@ -1,11 +1,21 @@
 <template>
   <div class="article-preview">
     <div class="article-meta">
-      <a href="profile.html" class="preview-link">
+      <AppLink
+        class="preview-link"
+        name="profile"
+        :params="{ username: article.author.username }"
+      >
         <img :src="article.author.image" />
-      </a>
+      </AppLink>
       <div class="info">
-        <a href="" class="author"> {{ article.author.username }}</a>
+        <AppLink
+          class="author"
+          name="profile"
+          :params="{ username: article.author.username }"
+        >
+          {{ article.author.username }}
+        </AppLink>
         <span class="date">
           {{ new Date(article.createdAt).toDateString() }}
         </span>
@@ -31,6 +41,8 @@
   </div>
 </template>
 <script lang="ts" setup>
+import AppLink from './AppLink.vue'
+
 interface Props {
   article: Article
 }

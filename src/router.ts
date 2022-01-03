@@ -47,8 +47,8 @@ export const router = createRouter({
     },
     {
       name: 'profile',
-      path: '/settings',
-      component: Home,
+      path: '/@:username',
+      component: () => import('./pages/Profile.vue'),
     },
     {
       name: 'editor',

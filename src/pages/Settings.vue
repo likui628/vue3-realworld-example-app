@@ -95,7 +95,7 @@ const onSubmit = async () => {
 
   const user = await putUser(filteredForm)
   store.updateUser(user)
-  await routerPush('global-feed')
+  await routerPush('profile', { username: user.username })
 }
 
 const onLogout = async () => {
