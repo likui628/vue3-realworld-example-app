@@ -28,7 +28,7 @@ import { userStore } from '../store/user'
 
 interface NavLink {
   name: AppRouteNames
-  params?: Partial<RouteParams>
+  params?: RouteParams
   title: string
   icon?: string
   display: 'all' | 'guest' | 'authorized'
@@ -68,7 +68,7 @@ const allLinks = computed<NavLink[]>(() => [
   },
   {
     name: 'profile',
-    params: { username: username.value },
+    params: { username: username.value || '' },
     title: username.value || '',
     display: 'authorized',
   },
