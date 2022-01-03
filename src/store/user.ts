@@ -6,7 +6,7 @@ export const userStore = defineStore('user', {
     user: null as User | null,
   }),
   actions: {
-    updateUser(user: User) {
+    updateUser(user: User | null) {
       if (user === undefined || user === null) {
         this.user = null
         request.deleteAuthorizationHeader()

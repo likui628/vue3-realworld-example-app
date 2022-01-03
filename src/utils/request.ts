@@ -93,6 +93,16 @@ export default class FetchRequest {
     )
   }
 
+  put<T = unknown>(
+    url: string,
+    data?: unknown,
+    options?: Partial<FetchRequestOptions>
+  ): Promise<T> {
+    return this.runFetch('PUT', url, data, options).then((r) =>
+      this.handleResponse<T>(r)
+    )
+  }
+
   setAuthorizationHeader(token: string) {
     this.options.headers.authorization = `Token ${token}`
   }
