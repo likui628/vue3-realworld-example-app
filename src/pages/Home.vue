@@ -10,20 +10,16 @@
     <div class="container page">
       <div class="row">
         <div class="col-md-9">
-          <suspense>
-            <template #default>
-              <ArticleContainer />
-            </template>
-            <template #fallback> Articles are downloading... </template>
-          </suspense>
+          <ArticleContainer />
         </div>
         <div class="col-md-3">
           <div class="sidebar">
+            <p>Popular Tags</p>
             <suspense>
               <template #default>
                 <PopularTags />
               </template>
-              <template #fallback> Popular tags are downloading... </template>
+              <template #fallback> Loading tags... </template>
             </suspense>
           </div>
         </div>

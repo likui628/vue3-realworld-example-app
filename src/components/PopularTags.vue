@@ -1,6 +1,4 @@
 <template>
-  <p>Popular Tags</p>
-
   <div class="tag-list">
     <app-link
       v-for="(tag, index) in tags"
@@ -22,13 +20,10 @@ export default {
 </script>
 
 <script lang="ts" setup>
-import { onMounted } from 'vue'
 import { useTags } from '../composable/useTags'
 import AppLink from '../components/AppLink.vue'
-const { tags, fetchTags } = useTags()
-await fetchTags()
 
-onMounted(async () => {
-  await fetchTags()
-})
+const { tags, fetchTags } = useTags()
+
+await fetchTags()
 </script>

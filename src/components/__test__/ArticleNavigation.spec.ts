@@ -30,19 +30,19 @@ describe('ArticleNavigation.vue', () => {
 
   test('when user logged', async () => {
     const wrapper = mount(ArticleNavigation, {
-      props: { tag: 'this is a tag' },
       global: {
         plugins: [router, createTestingPinia()],
       },
     })
     const store = userStore()
     store.user = mockUser
+    await router.push('/tag/tag-feed')
 
     await flushPromises()
 
     expect(wrapper.findAll('.nav-item')).toHaveLength(3)
     expect(wrapper.html()).toContain('Your Feed')
     expect(wrapper.html()).toContain('Global Feed')
-    expect(wrapper.html()).toContain('this is a tag')
+    expect(wrapper.html()).toContain('tag-feed')
   })
 })

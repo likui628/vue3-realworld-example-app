@@ -1,20 +1,17 @@
 <template>
-  <ArticleNavigation :tag="tag" />
-  <ArticlePreview :article="article" v-for="article in articles" />
-  <ArticlePagination
-    :page="page"
-    :count="articlesCount"
-    @page-change="changePage"
-  />
+  <ArticleNavigation />
+  <suspense>
+    <template #default>
+      <ArticleList />
+    </template>
+    <template #fallback>
+      <div class="article-preview">Loading articles...</div>
+    </template>
+  </suspense>
 </template>
 
 <script lang="ts" setup>
-import { useArticles } from '../composable/useArticles'
 import ArticleNavigation from './ArticleNavigation.vue'
-import ArticlePreview from './ArticlePreview.vue'
-import ArticlePagination from './ArticlePagination.vue'
 
-const { tag, page, articlesCount, changePage, fetchArticles, articles } =
-  useArticles()
-await fetchArticles()
+import ArticleList from './ArticleList.vue'
 </script>
