@@ -1,18 +1,16 @@
 <template>
-  <div class="feed-toggle">
-    <ul class="nav nav-pills outline-active">
-      <li class="nav-item" v-for="link in links" :key="link.name">
-        <AppLink
-          class="nav-link"
-          active-class="active"
-          :name="link.routeName"
-          :params="link.routeParams"
-        >
-          <i v-if="link.icon" :class="link.icon" /> {{ link.title }}
-        </AppLink>
-      </li>
-    </ul>
-  </div>
+  <ul class="nav nav-pills outline-active">
+    <li class="nav-item" v-for="link in links" :key="link.routeName">
+      <AppLink
+        class="nav-link"
+        active-class="active"
+        :name="link.routeName"
+        :params="link.routeParams"
+      >
+        <i v-if="link.icon" :class="link.icon" /> {{ link.title }}
+      </AppLink>
+    </li>
+  </ul>
 </template>
 <script lang="ts" setup>
 import { computed } from 'vue'
@@ -23,18 +21,20 @@ import { useRoute } from 'vue-router'
 
 import AppLink from './AppLink.vue'
 
-interface NavLink {
-  name: string
-  routeName: AppRouteNames
-  routeParams?: RouteParams
-  title: string
-  show: true | false
-  icon?: string
+interface Props {
+  useGlobalFeed?: boolean
+  useMyFeed?: boolean
+  useTagFeed?: boolean
+  useUserFeed?: boolean
+  useUserFavorited?: boolean
 }
 
-const props = defineProps({
-  tag: String,
-  username: String,
+const props = withDefaults(defineProps<Props>(), {
+  useGlobalFeed: false,
+  useMyFeed: false,
+  useTagFeed: false,
+  useUserFavorited: false,
+  useUserFeed: false,
 })
 
 const store = userStore()
@@ -45,26 +45,43 @@ const tag = computed(() =>
   typeof route.params.tag === 'string' ? route.params.tag : ''
 )
 
+interface NavLink {
+  routeName: AppRouteNames
+  routeParams?: Partial<RouteParams>
+  title: string
+  show: true | false
+  icon?: string
+}
+
 const allLinks = computed<NavLink[]>(() => [
   {
-    name: 'feed',
     routeName: 'feed',
     title: 'Your Feed',
-    show: username.value ? true : false,
+    show: props.useMyFeed && username.value ? true : false,
   },
   {
-    name: 'global-feed',
     routeName: 'global-feed',
     title: 'Global Feed',
-    show: true,
+    show: props.useGlobalFeed,
   },
   {
-    name: 'tag-feed',
     routeName: 'tag',
     routeParams: { tag: tag.value },
     title: tag.value,
     icon: 'ion-pound',
-    show: tag.value ? true : false,
+    show: props.useTagFeed && tag.value ? true : false,
+  },
+  {
+    routeName: 'profile',
+    title: 'My Articles',
+    routeParams: { username: 'Gerome' },
+    show: props.useUserFeed,
+  },
+  {
+    routeName: 'profile-favorites',
+    title: 'Favorited Articles',
+    routeParams: { username: 'Gerome' },
+    show: props.useUserFavorited,
   },
 ])
 const links = computed(() => allLinks.value.filter((link) => link.show))

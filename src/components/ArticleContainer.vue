@@ -1,5 +1,8 @@
 <template>
-  <ArticleNavigation />
+  <div class="feed-toggle">
+    <ArticleNavigation useGlobalFeed useMyFeed useTagFeed />
+  </div>
+
   <suspense>
     <template #default>
       <ArticleList />
