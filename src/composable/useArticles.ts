@@ -4,6 +4,8 @@ import {
   getArticles,
   getArticlesByTag,
   getArticlesByFeed,
+  getArticlesByAuthor,
+  getArticlesByFavorited,
 } from '../services/article/getArticles'
 import { userStore } from '../store/user'
 
@@ -27,6 +29,14 @@ export function useArticles() {
 
     if (routeName.value === 'feed' && store.user) {
       responsePromise = getArticlesByFeed(page.value)
+    }
+
+    if (routeName.value === 'profile') {
+      responsePromise = getArticlesByAuthor('Gerome', page.value)
+    }
+
+    if (routeName.value === 'profile-favorites') {
+      responsePromise = getArticlesByFavorited('Gerome', page.value)
     }
 
     if (responsePromise !== null) {

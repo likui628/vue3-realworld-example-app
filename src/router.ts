@@ -10,6 +10,7 @@ export type AppRouteNames =
   | 'register'
   | 'settings'
   | 'profile'
+  | 'profile-favorites'
   | 'editor'
 
 export const router = createRouter({
@@ -48,6 +49,11 @@ export const router = createRouter({
     {
       name: 'profile',
       path: '/@:username',
+      component: () => import('./pages/Profile.vue'),
+    },
+    {
+      name: 'profile-favorites',
+      path: '/@:username/favorites',
       component: () => import('./pages/Profile.vue'),
     },
     {
