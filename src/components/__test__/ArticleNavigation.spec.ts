@@ -20,6 +20,11 @@ beforeEach(async () => {
 describe('ArticleNavigation.vue', () => {
   test('when user not logged', () => {
     const wrapper = mount(ArticleNavigation, {
+      props: {
+        useGlobalFeed: true,
+        useMyFeed: true,
+        useTagFeed: true,
+      },
       global: {
         plugins: [router, createTestingPinia()],
       },
@@ -30,6 +35,11 @@ describe('ArticleNavigation.vue', () => {
 
   test('when user logged', async () => {
     const wrapper = mount(ArticleNavigation, {
+      props: {
+        useGlobalFeed: true,
+        useMyFeed: true,
+        useTagFeed: true,
+      },
       global: {
         plugins: [router, createTestingPinia()],
       },
@@ -44,5 +54,22 @@ describe('ArticleNavigation.vue', () => {
     expect(wrapper.html()).toContain('Your Feed')
     expect(wrapper.html()).toContain('Global Feed')
     expect(wrapper.html()).toContain('tag-feed')
+  })
+
+  test('when go to profile page', async () => {
+    const wrapper = mount(ArticleNavigation, {
+      props: {
+        useUserFavorited: true,
+        useUserFeed: true,
+      },
+      global: {
+        plugins: [router, createTestingPinia()],
+      },
+    })
+    await router.push('/@Gerome')
+
+    expect(wrapper.findAll('.nav-item')).toHaveLength(2)
+    expect(wrapper.html()).toContain('My Articles')
+    expect(wrapper.html()).toContain('Favorited Articles')
   })
 })
