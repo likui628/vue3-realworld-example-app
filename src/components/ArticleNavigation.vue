@@ -47,7 +47,7 @@ const tag = computed(() =>
 
 interface NavLink {
   routeName: AppRouteNames
-  routeParams?: Partial<RouteParams>
+  routeParams?: RouteParams
   title: string
   show: true | false
   icon?: string
@@ -66,7 +66,7 @@ const allLinks = computed<NavLink[]>(() => [
   },
   {
     routeName: 'tag',
-    routeParams: { tag: tag.value },
+    routeParams: <RouteParams>{ tag: tag.value },
     title: tag.value,
     icon: 'ion-pound',
     show: props.useTagFeed && tag.value ? true : false,
@@ -74,13 +74,13 @@ const allLinks = computed<NavLink[]>(() => [
   {
     routeName: 'profile',
     title: 'My Articles',
-    routeParams: { username: 'Gerome' },
+    routeParams: <RouteParams>{ username: 'Gerome' },
     show: props.useUserFeed,
   },
   {
     routeName: 'profile-favorites',
     title: 'Favorited Articles',
-    routeParams: { username: 'Gerome' },
+    routeParams: <RouteParams>{ username: 'Gerome' },
     show: props.useUserFavorited,
   },
 ])
