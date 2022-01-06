@@ -1,8 +1,16 @@
+import { ref } from 'vue'
 import { userStore } from './../../store/user'
 import { createTestingPinia } from '@pinia/testing'
 import { router } from '../../router'
 import { flushPromises, mount } from '@vue/test-utils'
 import ArticleNavigation from '../ArticleNavigation.vue'
+
+jest.mock('src/composable/useArticles', () => ({
+  useArticles: () => ({
+    tag: ref('tag-feed'),
+    username: ref('Gerome'),
+  }),
+}))
 
 const mockUser = {
   id: 1,
@@ -29,8 +37,10 @@ describe('ArticleNavigation.vue', () => {
         plugins: [router, createTestingPinia()],
       },
     })
-    expect(wrapper.findAll('.nav-item')).toHaveLength(1)
+  
+    expect(wrapper.findAll('.nav-item')).toHaveLength(2)
     expect(wrapper.html()).toContain('Global Feed')
+    expect(wrapper.html()).toContain('tag-feed')
   })
 
   test('when user logged', async () => {
