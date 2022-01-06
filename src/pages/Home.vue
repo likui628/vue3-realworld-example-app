@@ -10,7 +10,18 @@
     <div class="container page">
       <div class="row">
         <div class="col-md-9">
-          <ArticleContainer />
+          <div class="feed-toggle">
+            <ArticleNavigation useGlobalFeed useMyFeed useTagFeed />
+          </div>
+
+          <suspense>
+            <template #default>
+              <ArticleList />
+            </template>
+            <template #fallback>
+              <div class="article-preview">Loading articles...</div>
+            </template>
+          </suspense>
         </div>
         <div class="col-md-3">
           <div class="sidebar">
@@ -30,5 +41,6 @@
 
 <script lang="ts" setup>
 import PopularTags from '../components/PopularTags.vue'
-import ArticleContainer from '../components/ArticleContainer.vue'
+import ArticleNavigation from '../components/ArticleNavigation.vue'
+import ArticleList from '../components/ArticleList.vue'
 </script>
