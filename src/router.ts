@@ -12,6 +12,7 @@ export type AppRouteNames =
   | 'profile'
   | 'profile-favorites'
   | 'editor'
+  | 'article'
 
 export const router = createRouter({
   history: createWebHashHistory(),
@@ -60,6 +61,11 @@ export const router = createRouter({
       name: 'editor',
       path: '/settings',
       component: Home,
+    },
+    {
+      name: 'article',
+      path: '/article/:slug',
+      component: () => import('./pages/Article.vue'),
     },
   ],
 })
