@@ -5,6 +5,9 @@
     :key="index"
     @update="(newArticle) => updateArticle(index, newArticle)"
   />
+  <div class="article-preview" v-if="articles.length === 0">
+    No articles are here... yet.
+  </div>
   <ArticlePagination
     :page="page"
     :count="articlesCount"
