@@ -14,10 +14,10 @@
 </template>
 <script lang="ts" setup>
 import { computed } from 'vue'
-import { userStore } from '../store/user'
 import { AppRouteNames } from '../router'
 import { RouteParams } from 'vue-router'
-import { useRoute } from 'vue-router'
+import { userStore } from '../store/user'
+import { useArticles } from '../composable/useArticles'
 
 import AppLink from './AppLink.vue'
 
@@ -37,13 +37,9 @@ const props = withDefaults(defineProps<Props>(), {
   useUserFeed: false,
 })
 
-const store = userStore()
-const username = computed(() => store.user?.username)
+const { tag, username } = useArticles()
 
-const route = useRoute()
-const tag = computed(() =>
-  typeof route.params.tag === 'string' ? route.params.tag : ''
-)
+const store = userStore()
 
 interface NavLink {
   routeName: AppRouteNames
@@ -57,7 +53,7 @@ const allLinks = computed<NavLink[]>(() => [
   {
     routeName: 'feed',
     title: 'Your Feed',
-    show: props.useMyFeed && username.value ? true : false,
+    show: props.useMyFeed && store.user ? true : false,
   },
   {
     routeName: 'global-feed',
@@ -74,13 +70,13 @@ const allLinks = computed<NavLink[]>(() => [
   {
     routeName: 'profile',
     title: 'My Articles',
-    routeParams: <RouteParams>{ username: 'Gerome' },
+    routeParams: <RouteParams>{ username: username.value },
     show: props.useUserFeed,
   },
   {
     routeName: 'profile-favorites',
     title: 'Favorited Articles',
-    routeParams: <RouteParams>{ username: 'Gerome' },
+    routeParams: <RouteParams>{ username: username.value },
     show: props.useUserFavorited,
   },
 ])

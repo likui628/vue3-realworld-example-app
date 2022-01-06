@@ -31,12 +31,12 @@ export function useArticles() {
       responsePromise = getArticlesByFeed(page.value)
     }
 
-    if (routeName.value === 'profile') {
-      responsePromise = getArticlesByAuthor('Gerome', page.value)
+    if (routeName.value === 'profile' && username.value) {
+      responsePromise = getArticlesByAuthor(username.value, page.value)
     }
 
-    if (routeName.value === 'profile-favorites') {
-      responsePromise = getArticlesByFavorited('Gerome', page.value)
+    if (routeName.value === 'profile-favorites' && username.value) {
+      responsePromise = getArticlesByFavorited(username.value, page.value)
     }
 
     if (responsePromise !== null) {
@@ -48,6 +48,11 @@ export function useArticles() {
 
   const routeName = computed(() => route.name)
   watch(routeName, fetchArticles)
+
+  const username = computed(() =>
+    typeof route.params.username === 'string' ? route.params.username : ''
+  )
+  watch(username, fetchArticles)
 
   const tag = computed(() =>
     typeof route.params.tag === 'string' ? route.params.tag : ''
@@ -67,6 +72,7 @@ export function useArticles() {
   return {
     page,
     tag,
+    username,
     changePage,
     fetchArticles,
     articles,
