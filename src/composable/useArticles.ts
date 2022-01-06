@@ -60,6 +60,10 @@ export function useArticles() {
   }
   watch(page, fetchArticles)
 
+  const updateArticle = (index: number, article: Article): void => {
+    articles.value[index] = article
+  }
+
   return {
     page,
     tag,
@@ -67,5 +71,6 @@ export function useArticles() {
     fetchArticles,
     articles,
     articlesCount,
+    updateArticle,
   }
 }
