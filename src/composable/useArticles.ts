@@ -10,7 +10,6 @@ import {
 import { userStore } from '../store/user'
 
 export function useArticles() {
-  const route = useRoute()
   const store = userStore()
 
   const articles = ref<Article[]>([])
@@ -46,19 +45,6 @@ export function useArticles() {
     }
   }
 
-  const routeName = computed(() => route.name)
-  watch(routeName, fetchArticles)
-
-  const username = computed(() =>
-    typeof route.params.username === 'string' ? route.params.username : ''
-  )
-  watch(username, fetchArticles)
-
-  const tag = computed(() =>
-    typeof route.params.tag === 'string' ? route.params.tag : ''
-  )
-  watch(tag, fetchArticles)
-
   const page = ref(1)
   async function changePage(value: number) {
     page.value = value
@@ -68,6 +54,8 @@ export function useArticles() {
   const updateArticle = (index: number, article: Article): void => {
     articles.value[index] = article
   }
+
+  const { tag, username, routeName } = useMetaChange(fetchArticles)
 
   return {
     page,
@@ -79,4 +67,22 @@ export function useArticles() {
     articlesCount,
     updateArticle,
   }
+}
+
+function useMetaChange(callbackFunc: Function) {
+  const route = useRoute()
+
+  const routeName = computed(() => route.name)
+  const username = computed(() =>
+    typeof route.params.username === 'string' ? route.params.username : ''
+  )
+  const tag = computed(() =>
+    typeof route.params.tag === 'string' ? route.params.tag : ''
+  )
+
+  watch([routeName, username, tag], () => {
+    callbackFunc()
+  })
+
+  return { routeName, username, tag }
 }
