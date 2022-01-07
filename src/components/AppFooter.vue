@@ -1,7 +1,7 @@
 <template>
   <footer>
     <div class="container">
-      <a href="/" class="logo-font">conduit</a>
+      <AppLink name="global-feed" class="logo-font">conduit</AppLink>
       <span class="attribution">
         An interactive learning project from
         <a href="https://thinkster.io">Thinkster</a>
@@ -11,4 +11,6 @@
   </footer>
 </template>
 
-<script lang="ts" setup></script>
+<script lang="ts" setup>
+import AppLink from './AppLink.vue'
+</script>
