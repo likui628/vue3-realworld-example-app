@@ -4,6 +4,7 @@ import { createTestingPinia } from '@pinia/testing'
 import { router } from '../../router'
 import { flushPromises, mount } from '@vue/test-utils'
 import ArticleNavigation from '../ArticleNavigation.vue'
+import fixtures from '../../utils/test/fixtures'
 
 jest.mock('src/composable/useArticles', () => ({
   useArticles: () => ({
@@ -11,15 +12,6 @@ jest.mock('src/composable/useArticles', () => ({
     username: ref('Gerome'),
   }),
 }))
-
-const mockUser = {
-  id: 1,
-  username: 'foo',
-  email: 'a@b.c',
-  token: 'token',
-  bio: undefined,
-  image: undefined,
-}
 
 beforeEach(async () => {
   await router.push('/')
@@ -37,7 +29,7 @@ describe('ArticleNavigation.vue', () => {
         plugins: [router, createTestingPinia()],
       },
     })
-  
+
     expect(wrapper.findAll('.nav-item')).toHaveLength(2)
     expect(wrapper.html()).toContain('Global Feed')
     expect(wrapper.html()).toContain('tag-feed')
@@ -55,7 +47,7 @@ describe('ArticleNavigation.vue', () => {
       },
     })
     const store = userStore()
-    store.user = mockUser
+    store.user = fixtures.user
     await router.push('/tag/tag-feed')
 
     await flushPromises()

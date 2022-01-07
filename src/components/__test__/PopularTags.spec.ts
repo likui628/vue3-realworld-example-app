@@ -1,6 +1,6 @@
 import { flushPromises, mount } from '@vue/test-utils'
 import PopularTags from '../PopularTags.vue'
-import asyncComponentWrapper from '../../utils/async-component-wrapper'
+import asyncComponentWrapper from '../../utils/test/async-component-wrapper'
 import { router } from '../../router'
 import { useTags } from '../../composable/useTags'
 import { ref } from 'vue'

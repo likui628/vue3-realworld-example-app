@@ -3,15 +3,7 @@ import { createTestingPinia } from '@pinia/testing'
 import { router } from '../../router'
 import { flushPromises, mount } from '@vue/test-utils'
 import AppNavigation from '../AppNavigation.vue'
-
-const mockUser = {
-  id: 1,
-  username: 'foo',
-  email: 'a@b.c',
-  token: 'token',
-  bio: undefined,
-  image: undefined,
-}
+import fixtures from '../../utils/test/fixtures'
 
 beforeEach(async () => {
   await router.push('/')
@@ -38,7 +30,7 @@ describe('AppNavigation.vue', () => {
     })
 
     const store = userStore()
-    store.user = mockUser
+    store.user = fixtures.user
 
     await flushPromises()
     expect(wrapper.findAll('.nav-item')).toHaveLength(4)

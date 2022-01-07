@@ -1,4 +1,3 @@
-import { nextTick } from 'vue'
 import { mount } from '@vue/test-utils'
 import ArticlePagination from '../ArticlePagination.vue'
 
