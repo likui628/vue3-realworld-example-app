@@ -14,6 +14,13 @@
     @page-change="changePage"
   />
 </template>
+
+<script lang="ts">
+export default {
+  name: 'PopularTags',
+}
+</script>
+
 <script lang="ts" setup>
 import ArticlePreview from './ArticlePreview.vue'
 import ArticlePagination from './ArticlePagination.vue'
