@@ -13,7 +13,11 @@
     <i class="ion-gear-a"></i>
     &nbsp; Edit Profile Settings
   </app-link>
-  <button v-else class="btn btn-sm btn-outline-secondary action-btn">
+  <button
+    v-else
+    class="btn btn-sm btn-outline-secondary action-btn"
+    @click="followProfile"
+  >
     <i class="ion-plus-round"></i>&nbsp;
     {{ profile?.following ? 'Unfollow' : 'Follow' }}
     {{ profile?.username }}
@@ -22,11 +26,14 @@
 
 <script lang="ts" setup>
 import AppLink from '../components/AppLink.vue'
-import { computed} from 'vue'
+import { computed } from 'vue'
 import { userStore } from '../store/user'
 import { useRoute } from 'vue-router'
 import { useProfile } from '../composable/useProfile'
-
+import {
+  deleteFollowProfile,
+  postFollowProfile,
+} from '../services/profile/followProfile'
 
 const route = useRoute()
 const username = computed(() => route.params?.username as string)
@@ -35,4 +42,12 @@ const { profile } = useProfile({ username })
 
 const store = userStore()
 const showEdit = computed(() => store.user?.username === username.value)
+
+const followProfile = async () => {
+  if (profile.value?.following) {
+    profile.value = await deleteFollowProfile(username.value)
+  } else {
+    profile.value = await postFollowProfile(username.value)
+  }
+}
 </script>
