@@ -1,5 +1,9 @@
-import { ComputedRef, ref, watch } from 'vue'
+import { computed, ComputedRef, ref, watch } from 'vue'
 import { getProfile } from '../services/profile/getProfile'
+import {
+  deleteFollowProfile,
+  postFollowProfile,
+} from '../services/profile/followProfile'
 
 interface UserProps {
   username: ComputedRef<string>
@@ -14,5 +18,19 @@ export function useProfile({ username }: UserProps) {
     }
   }
   watch(username, () => fetchProfile(), { immediate: true })
-  return { profile }
+
+  const following = computed(() => profile.value?.following)
+
+  const followPending = ref(false)
+
+  const followProfile = async () => {
+    followPending.value = true
+    try {
+      const func = following.value ? deleteFollowProfile : postFollowProfile
+      profile.value = await func(username.value)
+    } finally {
+      followPending.value = false
+    }
+  }
+  return { profile, following, followProfile, followPending }
 }
