@@ -7,6 +7,13 @@ const user: User = {
   image: undefined,
 }
 
+const profile: Profile = {
+  username: 'Gerome',
+  bio: '',
+  image: 'https://api.realworld.io/images/demo-avatar.png',
+  following: false,
+}
+
 const article: Article = {
   author: {
     bio: '',
@@ -28,5 +35,6 @@ const article: Article = {
 
 export default {
   user,
+  profile,
   article,
 }
