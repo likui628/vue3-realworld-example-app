@@ -11,13 +11,13 @@ jest.mock('src/composable/useProfile', () => ({
   useProfile: () => ({
     profile: fixtures.profile,
     following: ref(false),
-    followProfile: jest.fn(),
+    followProfile: mockFollowProfile,
   }),
 }))
 
 beforeEach(async () => {
   await router.push('/@Gerome')
-  mockFollowProfile.mockReset()
+  mockFollowProfile.mockClear()
 })
 
 describe('ProfileHeader', () => {
