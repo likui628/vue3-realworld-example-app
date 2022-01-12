@@ -1,8 +1,5 @@
 <template>
-  <img
-    :src="profile?.image || 'https://api.realworld.io/images/smiley-cyrus.jpeg'"
-    class="user-img"
-  />
+  <img :src="profile?.image || $config.DEFAULT_AVATAR" class="user-img" />
   <h4>{{ profile?.username }}</h4>
   <p>
     {{ profile?.bio }}
