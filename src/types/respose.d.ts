@@ -22,3 +22,7 @@ declare interface TagsResponse {
 declare interface CommentsResponse {
   comments: Comment[]
 }
+
+declare interface CommentResponse {
+  comment: Comment
+}
