@@ -20,9 +20,17 @@ export default class FetchRequest {
   }
   private readonly options: FetchRequestOptions
 
+  private readonly handleJSON = (response: Response) => {
+    const contentType = response.headers.get('content-type') || ''
+    if (contentType.includes('application/json')) {
+      return response.json()
+    }
+    return JSON.parse('{}')
+  }
+
   private readonly handleResponse = <T>(response: Response): Promise<T> => {
     if (response.ok) {
-      return response.json()
+      return this.handleJSON(response)
     }
 
     switch (response.status) {
