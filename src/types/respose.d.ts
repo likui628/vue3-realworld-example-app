@@ -18,3 +18,7 @@ declare interface profileResponse {
 declare interface TagsResponse {
   tags: string[]
 }
+
+declare interface CommentsResponse {
+  comments: Comment[]
+}
