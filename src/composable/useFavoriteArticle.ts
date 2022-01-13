@@ -1,10 +1,10 @@
 import { ref, ComputedRef } from 'vue'
 import { useRouter } from 'vue-router'
+import { userStore } from '../store/user'
 import {
   postFavoriteArticle,
   deleteFavoriteArticle,
 } from '../services/article/favoriteArticle'
-import { userStore } from '../store/user'
 
 interface useFavoriteArticleProps {
   isFavorited: ComputedRef<boolean>
@@ -17,15 +17,13 @@ export function useFavoriteArticle({
   articleSlug,
   onUpdate,
 }: useFavoriteArticleProps) {
-  let response = null
   const favoriteArticlePending = ref(false)
   const store = userStore()
   const router = useRouter()
 
   const favoriteArticle = async () => {
     if (!store.user) {
-      router.push('/login')
-      return
+      return await router.push('/login')
     }
 
     favoriteArticlePending.value = true

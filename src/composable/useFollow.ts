@@ -1,4 +1,6 @@
 import { ComputedRef, ref } from 'vue'
+import { routerPush } from '../router'
+import { userStore } from '../store/user'
 import {
   deleteFollowProfile,
   postFollowProfile,
@@ -12,8 +14,12 @@ interface UserProps {
 
 export function useFollow({ isFollowing, username, onUpdate }: UserProps) {
   const followPending = ref(false)
+  const store = userStore()
 
   const followProfile = async () => {
+    if (!store.user) {
+      return await routerPush('login')
+    }
     followPending.value = true
     try {
       const func = isFollowing.value ? deleteFollowProfile : postFollowProfile
