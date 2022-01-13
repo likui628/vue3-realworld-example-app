@@ -1,7 +1,7 @@
 <template>
   <div class="banner">
     <div class="container">
-      <h1>How to build webapps that scale</h1>
+      <h1>{{ article?.title }}</h1>
       <div class="article-meta">
         <ArticleMeta />
       </div>
@@ -10,7 +10,7 @@
 
   <div class="container page">
     <div class="row article-content">
-      <ArticleContent />
+      <ArticleContent :article="article" />
     </div>
 
     <hr />
@@ -38,6 +38,7 @@
   </div>
 </template>
 <script lang="ts" setup>
+import { ref } from 'vue'
 import ArticleMeta from '../components/ArticleMeta.vue'
 import ArticleContent from '../components/ArticleContent.vue'
 import ArticleComments from '../components/ArticleComments.vue'
@@ -46,4 +47,6 @@ import { useRoute } from 'vue-router'
 import { getArticleBySlug } from '../services/article/getArticle'
 const route = useRoute()
 const slug = route.params.slug as string
+
+const article = ref<Article>(await getArticleBySlug(slug))
 </script>

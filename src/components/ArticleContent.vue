@@ -1,11 +1,23 @@
 <template>
-  <div class="col-md-12">
-    <p>
-      Web development technologies have evolved at an incredible clip over the
-      past few years.
-    </p>
-    <h2 id="introducing-ionic">Introducing RealWorld.</h2>
-    <p>It's a great solution for learning how other frameworks work.</p>
-  </div>
+  <div v-html="articleHtml" class="col-xs-12" />
+
+  <ul class="tag-list">
+    <li
+      v-for="(tag, index) in article.tagList"
+      :key="index"
+      class="tag-pill tag-default tag-outline"
+    >
+      {{ tag }}
+    </li>
+  </ul>
 </template>
-<script lang="ts" setup></script>
+<script lang="ts" setup>
+import { marked } from 'marked'
+import { computed } from 'vue'
+
+interface Props {
+  article: Article
+}
+const { article } = defineProps<Props>()
+const articleHtml = computed(() => marked(article.body))
+</script>
