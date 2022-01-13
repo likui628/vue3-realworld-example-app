@@ -1,5 +1,5 @@
 <template>
-  <form class="card comment-form">
+  <form v-if="user" class="card comment-form">
     <div class="card-block">
       <textarea
         v-model="comment"
@@ -10,7 +10,7 @@
     </div>
     <div class="card-footer">
       <img
-        :src="store.user?.image || $config.DEFAULT_AVATAR"
+        :src="user?.image || $config.DEFAULT_AVATAR"
         class="comment-author-img"
       />
       <button class="btn btn-sm btn-primary" @click="addComment">
@@ -18,11 +18,16 @@
       </button>
     </div>
   </form>
+  <p v-else>
+    <AppLink name="login">Sign in</AppLink> or
+    <AppLink name="register">sign up</AppLink>to add comments on this article.
+  </p>
 </template>
 <script lang="ts" setup>
 import { ref } from 'vue'
 import { postComment } from '../services/comment/postComment'
 import { userStore } from '../store/user'
+import AppLink from './AppLink.vue'
 
 interface Props {
   articleSlug: string
@@ -33,7 +38,7 @@ interface Emits {
 const props = defineProps<Props>()
 const emit = defineEmits<Emits>()
 
-const store = userStore()
+const { user } = userStore()
 
 const comment = ref('')
 
