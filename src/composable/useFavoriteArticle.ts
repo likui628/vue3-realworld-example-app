@@ -30,12 +30,11 @@ export function useFavoriteArticle({
 
     favoriteArticlePending.value = true
     try {
-      if (isFavorited.value) {
-        response = await deleteFavoriteArticle(articleSlug.value)
-      } else {
-        response = await postFavoriteArticle(articleSlug.value)
-      }
-      onUpdate(response.article)
+      const func = isFavorited.value
+        ? deleteFavoriteArticle
+        : postFavoriteArticle
+
+      onUpdate(await func(articleSlug.value))
     } finally {
       favoriteArticlePending.value = false
     }

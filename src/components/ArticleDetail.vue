@@ -3,7 +3,7 @@
     <div class="container">
       <h1>{{ article?.title }}</h1>
       <div class="article-meta">
-        <ArticleMeta />
+        <ArticleMeta :article="article" @update-article="updateArticle" />
       </div>
     </div>
   </div>
@@ -17,7 +17,7 @@
 
     <div class="article-actions">
       <div class="article-meta">
-        <ArticleMeta />
+        <ArticleMeta :article="article" />
       </div>
     </div>
 
@@ -49,4 +49,8 @@ const route = useRoute()
 const slug = route.params.slug as string
 
 const article = ref<Article>(await getArticleBySlug(slug))
+
+const updateArticle = (newArticle: Article) => {
+  article.value = newArticle
+}
 </script>
