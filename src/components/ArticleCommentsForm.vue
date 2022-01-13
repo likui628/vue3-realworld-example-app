@@ -1,5 +1,5 @@
 <template>
-  <form v-if="user" class="card comment-form">
+  <form v-if="store.user" class="card comment-form">
     <div class="card-block">
       <textarea
         v-model="comment"
@@ -10,7 +10,7 @@
     </div>
     <div class="card-footer">
       <img
-        :src="user?.image || $config.DEFAULT_AVATAR"
+        :src="store.user?.image || $config.DEFAULT_AVATAR"
         class="comment-author-img"
       />
       <button class="btn btn-sm btn-primary" @click="addComment">
@@ -38,7 +38,7 @@ interface Emits {
 const props = defineProps<Props>()
 const emit = defineEmits<Emits>()
 
-const { user } = userStore()
+const store = userStore()
 
 const comment = ref('')
 
