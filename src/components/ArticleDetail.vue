@@ -17,7 +17,7 @@
 
     <div class="article-actions">
       <div class="article-meta">
-        <ArticleMeta :article="article" />
+        <ArticleMeta :article="article" @update-article="updateArticle" />
       </div>
     </div>
 
