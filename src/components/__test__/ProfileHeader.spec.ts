@@ -1,4 +1,3 @@
-import { ref } from 'vue'
 import { flushPromises, mount } from '@vue/test-utils'
 import ProfileHeader from '../ProfileHeader.vue'
 import fixtures from '../../utils/test/fixtures'
@@ -6,18 +5,23 @@ import { createTestingPinia } from '@pinia/testing'
 import { router } from '../../router'
 import { userStore } from '../../store/user'
 
-const mockFollowProfile = jest.fn()
 jest.mock('src/composable/useProfile', () => ({
   useProfile: () => ({
     profile: fixtures.profile,
-    following: ref(false),
+    updateProfile: jest.fn(),
+  }),
+}))
+
+const mockFollowProfile = jest.fn()
+jest.mock('src/composable/useFollow', () => ({
+  useFollow: () => ({
+    profile: fixtures.profile,
     followProfile: mockFollowProfile,
   }),
 }))
 
 beforeEach(async () => {
   await router.push('/@Gerome')
-  mockFollowProfile.mockClear()
 })
 
 describe('ProfileHeader', () => {
@@ -35,7 +39,7 @@ describe('ProfileHeader', () => {
     expect(wrapper.html()).toContain('Edit Profile Settings')
   })
 
-  test('follow other user when logged', async () => {
+  test('follow other user', async () => {
     const wrapper = mount(ProfileHeader, {
       global: {
         plugins: [router, createTestingPinia()],
@@ -48,18 +52,5 @@ describe('ProfileHeader', () => {
     wrapper.find('.action-btn').trigger('click')
     expect(wrapper.html()).toContain('Follow Gerome')
     expect(mockFollowProfile).toBeCalledTimes(1)
-  })
-
-  test('follow without logged in', async () => {
-    const wrapper = mount(ProfileHeader, {
-      global: {
-        plugins: [router, createTestingPinia()],
-      },
-    })
-    await flushPromises()
-
-    wrapper.find('.action-btn').trigger('click')
-    expect(wrapper.html()).toContain('Follow Gerome')
-    expect(mockFollowProfile).toBeCalledTimes(0)
   })
 })
