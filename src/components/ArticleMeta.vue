@@ -15,12 +15,16 @@
   </div>
 
   <template v-if="showEdit">
-    <button class="btn btn-outline-secondary btn-sm">
+    <AppLink
+      name="edit-article"
+      :params="{ slug: article.slug }"
+      class="btn btn-outline-secondary btn-sm"
+    >
       <i class="ion-edit"></i>
       &nbsp; Edit Article
-    </button>
+    </AppLink>
     &nbsp;&nbsp;
-    <button class="btn btn-outline-danger btn-sm">
+    <button @click="onDelete" class="btn btn-outline-danger btn-sm">
       <i class="ion-trash-a"></i>
       &nbsp; Delete Article
     </button>
@@ -51,6 +55,8 @@
 import { computed } from 'vue'
 import { useFavoriteArticle } from '../composable/useFavoriteArticle'
 import { useFollow } from '../composable/useFollow'
+import { routerPush } from '../router'
+import { deleteArticle } from '../services/article/deleteArticle'
 import { userStore } from '../store/user'
 import AppLink from './AppLink.vue'
 
@@ -92,4 +98,9 @@ const { followPending, followProfile } = useFollow({
     emit('update-article', newArticle)
   },
 })
+
+const onDelete = async () => {
+  await deleteArticle(props.article.slug)
+  await routerPush('global-feed')
+}
 </script>
