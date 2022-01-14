@@ -13,6 +13,8 @@ export type AppRouteNames =
   | 'profile-favorites'
   | 'editor'
   | 'article'
+  | 'create-article'
+  | 'edit-article'
 
 export const router = createRouter({
   history: createWebHashHistory(),
@@ -58,29 +60,34 @@ export const router = createRouter({
       component: () => import('./pages/Profile.vue'),
     },
     {
-      name: 'editor',
-      path: '/settings',
-      component: Home,
-    },
-    {
       name: 'article',
       path: '/article/:slug',
       component: () => import('./pages/Article.vue'),
     },
+    {
+      name: 'create-article',
+      path: '/editor',
+      component: () => import('./pages/EditArticle.vue'),
+    },
+    {
+      name: 'edit-article',
+      path: '/editor/:slug',
+      component: () => import('./pages/EditArticle.vue'),
+    },
   ],
 })
 
-export function routerPush(
+export async function routerPush(
   name: AppRouteNames,
   params?: RouteParams
 ): ReturnType<typeof router.push> {
   if (params !== undefined) {
-    return router.push({
+    return await router.push({
       name,
       params,
     })
   } else {
-    return router.push({
+    return await router.push({
       name,
     })
   }

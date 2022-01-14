@@ -46,7 +46,7 @@ const allLinks = computed<NavLink[]>(() => [
     display: 'all',
   },
   {
-    name: 'editor',
+    name: 'create-article',
     title: 'New Article',
     display: 'authorized',
   },
