@@ -16,10 +16,7 @@ const profile: Profile = {
 
 const article: Article = {
   author: {
-    bio: '',
-    following: false,
-    image: 'https://api.realworld.io/images/demo-avatar.png',
-    username: 'Gerome',
+    ...profile,
   },
   body: 'Over 100 implementations have been created using various languages, libraries, and frameworks.\n\nExplore them on CodebaseShow.',
   createdAt: '2021-11-24T12:11:07.952Z',
@@ -33,8 +30,26 @@ const article: Article = {
   updatedAt: '2021-11-24T12:11:07.952Z',
 }
 
+const comment: ArticleComment = {
+  id: 1,
+  author: {
+    ...profile,
+  },
+  body: 'comment 1',
+  createdAt: '2021-11-24T12:11:08.340Z',
+  updatedAt: '2021-11-24T12:11:08.340Z',
+}
+
+const comment2: ArticleComment = {
+  ...comment,
+  id: 2,
+  body: 'comment2',
+}
+
 export default {
   user,
   profile,
   article,
+  comment,
+  comment2,
 }
