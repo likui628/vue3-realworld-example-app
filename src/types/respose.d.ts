@@ -20,9 +20,9 @@ declare interface TagsResponse {
 }
 
 declare interface CommentsResponse {
-  comments: Comment[]
+  comments: ArticleComment[]
 }
 
 declare interface CommentResponse {
-  comment: Comment
+  comment: ArticleComment
 }

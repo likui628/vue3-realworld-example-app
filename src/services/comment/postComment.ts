@@ -1,6 +1,6 @@
 import { request } from '../index'
 
-export function postComment(slug: string, body: string): Promise<Comment> {
+export function postComment(slug: string, body: string): Promise<ArticleComment> {
   return request
     .post<CommentResponse>(`/articles/${slug}/comments`, {
       comment: { body },

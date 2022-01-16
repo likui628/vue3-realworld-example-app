@@ -39,7 +39,7 @@ import { userStore } from '../store/user'
 import AppLink from './AppLink.vue'
 
 interface Props {
-  comment: Comment
+  comment: ArticleComment
 }
 const { comment } = defineProps<Props>()
 

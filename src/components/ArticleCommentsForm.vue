@@ -33,7 +33,7 @@ interface Props {
   articleSlug: string
 }
 interface Emits {
-  (e: 'add-comment', comment: Comment): void
+  (e: 'add-comment', comment: ArticleComment): void
 }
 const props = defineProps<Props>()
 const emit = defineEmits<Emits>()

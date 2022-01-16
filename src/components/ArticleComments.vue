@@ -21,7 +21,7 @@ interface Props {
 }
 const props = defineProps<Props>()
 
-const comments = ref<Comment[]>()
+const comments = ref<ArticleComment[]>()
 
 const delComment = async (commentId: number) => {
   await deleteComment(props.slug, commentId)
@@ -30,7 +30,7 @@ const delComment = async (commentId: number) => {
 
 comments.value = await getCommentsBySlug(props.slug)
 
-const addComment = (newComment: Comment) => {
+const addComment = (newComment: ArticleComment) => {
   comments.value?.unshift(newComment)
 }
 </script>

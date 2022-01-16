@@ -1,4 +1,4 @@
-declare interface Comment {
+declare interface ArticleComment {
   id: number
   author: Profile
   body: string
