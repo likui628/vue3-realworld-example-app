@@ -9,6 +9,13 @@
     :key="comment.id"
   />
 </template>
+
+<script lang="ts">
+export default {
+  name: 'ArticleComments',
+}
+</script>
+
 <script lang="ts" setup>
 import { ref } from 'vue'
 import { getCommentsBySlug } from '../services/comment/getComments'
