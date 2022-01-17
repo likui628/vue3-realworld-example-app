@@ -1,5 +1,5 @@
 <template>
-  <ArticleCommentsForm :article-slug="props.slug" @add-comment="addComment" />
+  <ArticleCommentForm :article-slug="props.slug" @add-comment="addComment" />
 
   <ArticleComment
     :comment="comment"
@@ -14,7 +14,7 @@ import { ref } from 'vue'
 import { getCommentsBySlug } from '../services/comment/getComments'
 import { deleteComment } from '../services/comment/postComment'
 import ArticleComment from './ArticleComment.vue'
-import ArticleCommentsForm from './ArticleCommentsForm.vue'
+import ArticleCommentForm from './ArticleCommentForm.vue'
 
 interface Props {
   slug: string
