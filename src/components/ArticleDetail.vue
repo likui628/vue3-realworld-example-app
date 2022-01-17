@@ -25,7 +25,7 @@
       <div class="col-xs-12 col-md-8 offset-md-2">
         <suspense>
           <template #default>
-            <ArticleComments :slug="slug" />
+            <ArticleComments />
           </template>
           <template #fallback>
             <div class="card">

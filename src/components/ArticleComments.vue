@@ -1,9 +1,8 @@
 <template>
-  <ArticleCommentForm :article-slug="props.slug" @add-comment="addComment" />
+  <ArticleCommentForm :article-slug="slug" @add-comment="addComment" />
 
   <ArticleComment
     :comment="comment"
-    :article-slug="props.slug"
     @delete="delComment(comment.id)"
     v-for="comment in comments"
     :key="comment.id"
@@ -18,24 +17,23 @@ export default {
 
 <script lang="ts" setup>
 import { ref } from 'vue'
+import { useRoute } from 'vue-router'
 import { getCommentsBySlug } from '../services/comment/getComments'
 import { deleteComment } from '../services/comment/postComment'
 import ArticleComment from './ArticleComment.vue'
 import ArticleCommentForm from './ArticleCommentForm.vue'
 
-interface Props {
-  slug: string
-}
-const props = defineProps<Props>()
+const route = useRoute()
+const slug = route.params.slug as string
 
 const comments = ref<ArticleComment[]>()
 
 const delComment = async (commentId: number) => {
-  await deleteComment(props.slug, commentId)
+  await deleteComment(slug, commentId)
   comments.value = comments.value?.filter((c) => c.id !== commentId)
 }
 
-comments.value = await getCommentsBySlug(props.slug)
+comments.value = await getCommentsBySlug(slug)
 
 const addComment = (newComment: ArticleComment) => {
   comments.value?.unshift(newComment)
