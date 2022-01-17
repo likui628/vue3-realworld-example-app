@@ -7,6 +7,7 @@
           type="text"
           class="form-control form-control-lg"
           placeholder="Article Title"
+          data-test="title"
         />
       </fieldset>
       <fieldset class="form-group">
@@ -15,6 +16,7 @@
           type="text"
           class="form-control"
           placeholder="What's this article about?"
+          data-test="description"
         />
       </fieldset>
       <fieldset class="form-group">
@@ -23,6 +25,7 @@
           class="form-control"
           rows="8"
           placeholder="Write your article (in markdown)"
+          data-test="body"
         ></textarea>
       </fieldset>
       <fieldset class="form-group">
@@ -32,8 +35,9 @@
           class="form-control"
           placeholder="Enter tags"
           @keydown.enter.prevent="addTag"
+          data-test="newTag"
         />
-        <div class="tag-list">
+        <div class="tag-list" data-test="tag-list">
           <span
             v-for="tag in formData.tagList"
             :key="tag"
@@ -51,6 +55,13 @@
     </fieldset>
   </form>
 </template>
+
+<script lang="ts">
+export default {
+  name: 'EditArticleForm',
+}
+</script>
+
 <script lang="ts" setup>
 import { ref, reactive, computed } from 'vue'
 import { useRoute } from 'vue-router'
@@ -90,20 +101,18 @@ const removeTag = (tag: string) => {
 }
 
 const onSubmit = async () => {
-  let article: Article
+  let article = null
   if (slug.value) {
     article = await putArticle(slug.value, formData)
   } else {
     article = await postArticle(formData)
   }
-
-  await routerPush('article', { slug: article.slug })
+  if (article) await routerPush('article', { slug: article.slug })
 }
 
 async function fetchArticle() {
   if (!slug.value) return
   const article = await getArticleBySlug(slug.value)
-
   formData.title = article.title
   formData.body = article.body
   formData.description = article.description
