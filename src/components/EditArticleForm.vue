@@ -37,17 +37,7 @@
           @keydown.enter.prevent="addTag"
           data-test="newTag"
         />
-        <div class="tag-list" data-test="tag-list">
-          <span
-            v-for="tag in formData.tagList"
-            :key="tag"
-            class="tag-default tag-pill"
-            @click="removeTag(tag)"
-          >
-            <i class="ion-close-round" />
-            {{ tag }}
-          </span>
-        </div>
+        <TagList :tags="formData.tagList" editable @click="removeTag" />
       </fieldset>
       <button class="btn btn-lg pull-xs-right btn-primary" type="submit">
         Publish Article
@@ -68,6 +58,7 @@ import { useRoute } from 'vue-router'
 import { routerPush } from '../router'
 import { getArticleBySlug } from '../services/article/getArticle'
 import { postArticle, putArticle } from '../services/article/postArticle'
+import TagList from './TagList.vue'
 
 interface Form {
   title: string
