@@ -1,5 +1,5 @@
 import { createTestingPinia } from '@pinia/testing'
-import { config, flushPromises, mount } from '@vue/test-utils'
+import { flushPromises, mount } from '@vue/test-utils'
 import { router, routerPush } from '../../router'
 import { getCommentsBySlug } from '../../services/comment/getComments'
 import { userStore } from '../../store/user'
@@ -8,9 +8,6 @@ import fixtures from '../../utils/test/fixtures'
 import ArticleComments from '../ArticleComments.vue'
 import ArticleComment from '../ArticleComment.vue'
 
-config.global.mocks = {
-  $config: (DEFAULT_AVATAR: string) => '',
-}
 jest.mock('src/services/comment/getComments')
 jest.mock('src/services/comment/postComment', () => ({
   deleteComment: jest.fn(),

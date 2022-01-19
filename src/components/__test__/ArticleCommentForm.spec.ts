@@ -1,14 +1,10 @@
 import { createTestingPinia } from '@pinia/testing'
-import { config, flushPromises, mount } from '@vue/test-utils'
+import { flushPromises, mount } from '@vue/test-utils'
 import { router } from '../../router'
 import { postComment } from '../../services/comment/postComment'
 import { userStore } from '../../store/user'
 import fixtures from '../../utils/test/fixtures'
 import ArticleCommentForm from '../ArticleCommentForm.vue'
-
-config.global.mocks = {
-  $config: (DEFAULT_AVATAR: string) => '',
-}
 
 jest.mock('src/services/comment/postComment')
 
