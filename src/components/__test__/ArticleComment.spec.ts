@@ -1,19 +1,30 @@
 import { createTestingPinia } from '@pinia/testing'
-import { flushPromises, mount } from '@vue/test-utils'
+import { flushPromises, mount, VueWrapper } from '@vue/test-utils'
 import { router } from '../../router'
 import { userStore } from '../../store/user'
 import fixtures from '../../utils/test/fixtures'
 import ArticleComment from '../ArticleComment.vue'
 
 describe('ArticleComment', () => {
-  it('should show comment', () => {
-    const wrapper = mount(ArticleComment, {
-      props: {
-        comment: fixtures.comment,
-      },
+  let wrapper: VueWrapper<any>
+  const findDeleteButton = () => wrapper.find('.ion-trash-a')
+
+  function createComponent(props: any) {
+    wrapper = mount(ArticleComment, {
+      props,
       global: {
         plugins: [router, createTestingPinia()],
       },
+    })
+  }
+
+  afterEach(() => {
+    wrapper.unmount()
+  })
+
+  it('should show comment', () => {
+    createComponent({
+      comment: fixtures.comment,
     })
 
     expect(wrapper.html()).toContain(fixtures.comment.body)
@@ -21,14 +32,10 @@ describe('ArticleComment', () => {
   })
 
   test('delete article', async () => {
-    const wrapper = mount(ArticleComment, {
-      props: {
-        comment: fixtures.comment,
-      },
-      global: {
-        plugins: [router, createTestingPinia()],
-      },
+    createComponent({
+      comment: fixtures.comment,
     })
+
     const store = userStore()
     store.user = {
       ...fixtures.user,
@@ -36,7 +43,7 @@ describe('ArticleComment', () => {
     }
     await flushPromises()
 
-    wrapper.find('.ion-trash-a').trigger('click')
+    findDeleteButton().trigger('click')
     expect(wrapper.emitted()).toHaveProperty('delete')
   })
 })

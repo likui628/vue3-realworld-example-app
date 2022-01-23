@@ -1,5 +1,5 @@
 import { createTestingPinia } from '@pinia/testing'
-import { flushPromises, mount } from '@vue/test-utils'
+import { flushPromises, mount, VueWrapper } from '@vue/test-utils'
 import { router, routerPush } from '../../router'
 import { getCommentsBySlug } from '../../services/comment/getComments'
 import { userStore } from '../../store/user'
@@ -14,9 +14,25 @@ jest.mock('src/services/comment/postComment', () => ({
 }))
 
 describe('ArticleComments', () => {
+  let wrapper: VueWrapper<any>
+
+  const findDeleteButton = () => wrapper.find('.ion-trash-a')
+
   const mockGetCommentsBySlug = getCommentsBySlug as jest.MockedFunction<
     typeof getCommentsBySlug
   >
+
+  function createComponent() {
+    wrapper = mount(asyncComponentWrapper(ArticleComments), {
+      global: {
+        stubs: {
+          ArticleCommentForm: true,
+          ArticleComment: false,
+        },
+        plugins: [router, createTestingPinia()],
+      },
+    })
+  }
 
   beforeEach(async () => {
     mockGetCommentsBySlug.mockResolvedValue([
@@ -26,16 +42,12 @@ describe('ArticleComments', () => {
     await routerPush('article', { slug: fixtures.article.slug })
   })
 
+  afterEach(() => {
+    wrapper.unmount()
+  })
+
   test('delete a comment ', async () => {
-    const wrapper = mount(asyncComponentWrapper(ArticleComments), {
-      global: {
-        stubs: {
-          ArticleCommentForm: true,
-          ArticleComment: false,
-        },
-        plugins: [router, createTestingPinia()],
-      },
-    })
+    createComponent()
 
     const store = userStore()
     store.user = {
@@ -45,7 +57,7 @@ describe('ArticleComments', () => {
     await flushPromises()
 
     expect(wrapper.findAllComponents(ArticleComment)).toHaveLength(2)
-    await wrapper.find('.ion-trash-a').trigger('click')
+    await findDeleteButton().trigger('click')
 
     expect(wrapper.findAllComponents(ArticleComment)).toHaveLength(1)
   })

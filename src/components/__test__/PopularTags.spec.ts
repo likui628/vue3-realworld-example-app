@@ -1,4 +1,4 @@
-import { flushPromises, mount } from '@vue/test-utils'
+import { flushPromises, mount, VueWrapper } from '@vue/test-utils'
 import PopularTags from '../PopularTags.vue'
 import asyncComponentWrapper from '../../utils/test/async-component-wrapper'
 import { router } from '../../router'
@@ -17,13 +17,24 @@ const mockValue = async (tags: Array<string>) => {
 }
 
 describe('PopularTags.vue', () => {
-  test('no tag there', async () => {
-    await mockValue([])
-    const wrapper = mount(asyncComponentWrapper(PopularTags), {
+  let wrapper: VueWrapper<any>
+
+  function createComponent() {
+    wrapper = mount(asyncComponentWrapper(PopularTags), {
       global: {
         plugins: [router],
       },
     })
+  }
+
+  afterEach(() => {
+    wrapper.unmount()
+  })
+
+  test('no tag there', async () => {
+    await mockValue([])
+
+    createComponent()
 
     await flushPromises()
     expect(wrapper.html()).toContain('No tags are here... yet.')
@@ -31,11 +42,8 @@ describe('PopularTags.vue', () => {
 
   test('there are three tags', async () => {
     await mockValue(['foo', 'bar', 'foobar'])
-    const wrapper = mount(asyncComponentWrapper(PopularTags), {
-      global: {
-        plugins: [router],
-      },
-    })
+
+    createComponent()
 
     await flushPromises()
     expect(wrapper.findAll('a')).toHaveLength(3)

@@ -1,4 +1,4 @@
-import { flushPromises, mount } from '@vue/test-utils'
+import { flushPromises, mount, VueWrapper } from '@vue/test-utils'
 import ArticleList from '../ArticleList.vue'
 import asyncComponentWrapper from '../../utils/test/async-component-wrapper'
 import fixtures from '../../utils/test/fixtures'
@@ -14,17 +14,27 @@ beforeEach(async () => {
 })
 
 describe('ArticleList.vue', () => {
+  let wrapper: VueWrapper<any>
+
+  function createComponent() {
+    wrapper = mount(asyncComponentWrapper(ArticleList), {
+      global: {
+        plugins: [router, createTestingPinia()],
+      },
+    })
+  }
+
+  afterEach(() => {
+    wrapper.unmount()
+  })
+
   test('when articles exist', async () => {
     mockGetArticles.mockResolvedValueOnce(<ArticlesResponse>{
       articles: [fixtures.article],
       articlesCount: 1,
     })
 
-    const wrapper = mount(asyncComponentWrapper(ArticleList), {
-      global: {
-        plugins: [router, createTestingPinia()],
-      },
-    })
+    createComponent()
     await flushPromises()
 
     expect(wrapper.findAll('.article-preview')).toHaveLength(1)
@@ -37,11 +47,7 @@ describe('ArticleList.vue', () => {
       articlesCount: 0,
     })
 
-    const wrapper = mount(asyncComponentWrapper(ArticleList), {
-      global: {
-        plugins: [router, createTestingPinia()],
-      },
-    })
+    createComponent()
     await flushPromises()
 
     expect(wrapper.findAll('.article-preview')).toHaveLength(1)

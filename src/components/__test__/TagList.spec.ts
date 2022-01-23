@@ -1,13 +1,21 @@
-import { mount } from '@vue/test-utils'
+import { mount, VueWrapper } from '@vue/test-utils'
 import TagList from '../TagList.vue'
 
 describe('TagList', () => {
-  it('should render tags', async () => {
-    const wrapper = mount(TagList, {
-      props: {
-        tags: ['1', '2', '3'],
-      },
+  let wrapper: VueWrapper<any>
+
+  function createComponent(props: any) {
+    wrapper = mount(TagList, {
+      props,
     })
+  }
+
+  afterEach(() => {
+    wrapper.unmount()
+  })
+
+  it('should render tags', async () => {
+    createComponent({ tags: ['1', '2', '3'] })
 
     expect(wrapper.findAll('.ion-close-round')).toHaveLength(0)
     expect(wrapper.findAll('.tag-default')).toHaveLength(3)
@@ -18,11 +26,8 @@ describe('TagList', () => {
   })
 
   test('click tag ', async () => {
-    const wrapper = mount(TagList, {
-      props: {
-        tags: ['1'],
-      },
-    })
+    createComponent({ tags: ['1'] })
+
     wrapper.find('.tag-default').trigger('click')
 
     expect(wrapper.emitted()).toHaveProperty('click')

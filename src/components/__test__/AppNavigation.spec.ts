@@ -1,7 +1,7 @@
 import { userStore } from './../../store/user'
 import { createTestingPinia } from '@pinia/testing'
 import { router } from '../../router'
-import { flushPromises, mount } from '@vue/test-utils'
+import { flushPromises, mount, VueWrapper } from '@vue/test-utils'
 import AppNavigation from '../AppNavigation.vue'
 import fixtures from '../../utils/test/fixtures'
 
@@ -10,12 +10,23 @@ beforeEach(async () => {
 })
 
 describe('AppNavigation.vue', () => {
-  test('when user not logged', () => {
-    const wrapper = mount(AppNavigation, {
+  let wrapper: VueWrapper<any>
+
+  function createComponent() {
+    wrapper = mount(AppNavigation, {
       global: {
         plugins: [router, createTestingPinia()],
       },
     })
+  }
+
+  afterEach(() => {
+    wrapper.unmount()
+  })
+
+  test('when user not logged', () => {
+    createComponent()
+
     expect(wrapper.findAll('.nav-item')).toHaveLength(3)
     expect(wrapper.html()).toContain('Home')
     expect(wrapper.html()).toContain('Sign in')
@@ -23,11 +34,7 @@ describe('AppNavigation.vue', () => {
   })
 
   test('when user logged', async () => {
-    const wrapper = mount(AppNavigation, {
-      global: {
-        plugins: [router, createTestingPinia()],
-      },
-    })
+    createComponent()
 
     const store = userStore()
     store.user = fixtures.user

@@ -2,7 +2,7 @@ import { ref } from 'vue'
 import { userStore } from './../../store/user'
 import { createTestingPinia } from '@pinia/testing'
 import { router } from '../../router'
-import { flushPromises, mount } from '@vue/test-utils'
+import { flushPromises, mount, VueWrapper } from '@vue/test-utils'
 import ArticleNavigation from '../ArticleNavigation.vue'
 import fixtures from '../../utils/test/fixtures'
 
@@ -18,16 +18,26 @@ beforeEach(async () => {
 })
 
 describe('ArticleNavigation.vue', () => {
-  test('when user not logged', () => {
-    const wrapper = mount(ArticleNavigation, {
-      props: {
-        useGlobalFeed: true,
-        useMyFeed: true,
-        useTagFeed: true,
-      },
+  let wrapper: VueWrapper<any>
+
+  function createComponent(props: any) {
+    wrapper = mount(ArticleNavigation, {
+      props,
       global: {
         plugins: [router, createTestingPinia()],
       },
+    })
+  }
+
+  afterEach(() => {
+    wrapper.unmount()
+  })
+
+  test('when user not logged', () => {
+    createComponent({
+      useGlobalFeed: true,
+      useMyFeed: true,
+      useTagFeed: true,
     })
 
     expect(wrapper.findAll('.nav-item')).toHaveLength(2)
@@ -36,16 +46,12 @@ describe('ArticleNavigation.vue', () => {
   })
 
   test('when user logged', async () => {
-    const wrapper = mount(ArticleNavigation, {
-      props: {
-        useGlobalFeed: true,
-        useMyFeed: true,
-        useTagFeed: true,
-      },
-      global: {
-        plugins: [router, createTestingPinia()],
-      },
+    createComponent({
+      useGlobalFeed: true,
+      useMyFeed: true,
+      useTagFeed: true,
     })
+
     const store = userStore()
     store.user = fixtures.user
     await router.push('/tag/tag-feed')
@@ -59,14 +65,9 @@ describe('ArticleNavigation.vue', () => {
   })
 
   test('when go to profile page', async () => {
-    const wrapper = mount(ArticleNavigation, {
-      props: {
-        useUserFavorited: true,
-        useUserFeed: true,
-      },
-      global: {
-        plugins: [router, createTestingPinia()],
-      },
+    createComponent({
+      useUserFavorited: true,
+      useUserFeed: true,
     })
     await router.push('/@Gerome')
 

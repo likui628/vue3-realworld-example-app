@@ -1,4 +1,4 @@
-import { flushPromises, mount } from '@vue/test-utils'
+import { flushPromises, mount, VueWrapper } from '@vue/test-utils'
 import ProfileHeader from '../ProfileHeader.vue'
 import fixtures from '../../utils/test/fixtures'
 import { createTestingPinia } from '@pinia/testing'
@@ -25,12 +25,23 @@ beforeEach(async () => {
 })
 
 describe('ProfileHeader', () => {
-  test('logged user profile', async () => {
-    const wrapper = mount(ProfileHeader, {
+  let wrapper: VueWrapper<any>
+
+  function createComponent() {
+    wrapper = mount(ProfileHeader, {
       global: {
         plugins: [router, createTestingPinia()],
       },
     })
+  }
+
+  afterEach(() => {
+    wrapper.unmount()
+  })
+
+  test('logged user profile', async () => {
+    createComponent()
+
     const store = userStore()
     store.user = { ...fixtures.user, ...fixtures.profile }
 
@@ -40,11 +51,8 @@ describe('ProfileHeader', () => {
   })
 
   test('follow other user', async () => {
-    const wrapper = mount(ProfileHeader, {
-      global: {
-        plugins: [router, createTestingPinia()],
-      },
-    })
+    createComponent()
+    
     const store = userStore()
     store.user = fixtures.user
     await flushPromises()
