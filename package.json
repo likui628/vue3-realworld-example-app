@@ -10,7 +10,7 @@
   "dependencies": {
     "marked": "^4.0.14",
     "vue": "^3.2.41",
-    "pinia": "^2.0.27",
+    "pinia": "^2.0.28",
     "vue-router": "4"
   },
   "devDependencies": {
