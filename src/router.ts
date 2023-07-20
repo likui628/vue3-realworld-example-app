@@ -81,14 +81,8 @@ export async function routerPush(
   name: AppRouteNames,
   params?: RouteParams
 ): ReturnType<typeof router.push> {
-  if (params !== undefined) {
-    return await router.push({
-      name,
-      params,
-    })
-  } else {
-    return await router.push({
-      name,
-    })
-  }
+  return await router.push({
+    name,
+    params,
+  })
 }

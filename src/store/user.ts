@@ -1,19 +1,19 @@
 import { defineStore } from 'pinia'
+import { ref } from 'vue'
 import { request } from '../services'
 
-export const userStore = defineStore('user', {
-  state: () => ({
-    user: null as User | null,
-  }),
-  actions: {
-    updateUser(user: User | null) {
-      if (user === undefined || user === null) {
-        this.user = null
-        request.deleteAuthorizationHeader()
-      } else {
-        this.user = user
-        request.setAuthorizationHeader(user.token)
-      }
-    },
-  },
+export const userStore = defineStore('user', () => {
+  const user = ref<User | null>(null)
+
+  function updateUser(u: User | null) {
+    if (u) {
+      user.value = u
+      request.setAuthorizationHeader(u.token)
+    } else {
+      user.value = null
+      request.deleteAuthorizationHeader()
+    }
+  }
+
+  return { user, updateUser }
 })
