@@ -8,7 +8,7 @@
     "test": "jest"
   },
   "dependencies": {
-    "marked": "^4.0.14",
+    "marked": "^7.0.5",
     "pinia": "^2.0.35",
     "vue": "^3.3.4",
     "vue-router": "4"
