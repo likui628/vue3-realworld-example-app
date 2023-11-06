@@ -3104,10 +3104,10 @@ makeerror@1.0.12:
   dependencies:
     tmpl "1.0.5"
 
-marked@^4.0.14:
-  version "4.3.0"
-  resolved "https://registry.yarnpkg.com/marked/-/marked-4.3.0.tgz#796362821b019f734054582038b116481b456cf3"
-  integrity sha512-PRsaiG84bK+AMvxziE/lCFss8juXjNaWzVbN5tXAm4XjeaS9NAHhop+PjQxz2A9h8Q4M/xGmzP8vqNwy6JeK0A==
+marked@^9.1.5:
+  version "9.1.5"
+  resolved "https://registry.yarnpkg.com/marked/-/marked-9.1.5.tgz#fcada4702ea64a5c05a4ff0e0639628aac8a1e5f"
+  integrity sha512-14QG3shv8Kg/xc0Yh6TNkMj90wXH9mmldi5941I2OevfJ/FQAFLEwtwU2/FfgSAOMlWHrEukWSGQf8MiVYNG2A==
 
 merge-stream@^2.0.0:
   version "2.0.0"
